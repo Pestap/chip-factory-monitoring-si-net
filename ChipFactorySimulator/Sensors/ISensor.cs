@@ -1,9 +1,23 @@
+using MQTTnet;
+using MQTTnet.Client;
+using MQTTnet.Protocol;
+using MQTTnet.Server;
+
 namespace ChipFactorySimulator.Sensors;
 
 public interface ISensor
 {
-    public abstract void PublishData();
-    public abstract string GetInfo();
+    public void PublishData(double data, DateTime time)
+    {
+
+        MqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+            .WithPayload($"{Name};{data};{UnitOfMeasurement};{time}")
+            .WithTopic(Topic)
+            .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
+            .Build());
+    }
+    string GetInfo();
+    IMqttClient MqttClient { get; set; }
 
     double GenerateDataPoint(bool random=true)
     {
@@ -23,17 +37,11 @@ public interface ISensor
     
     void StartGenerating()
     {
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 3; i++)
         {
-            Console.WriteLine($"{Name} - {GenerateDataPoint()} - {DateTime.Now}");
+            PublishData(GenerateDataPoint(), DateTime.Now);
             Thread.Sleep((int)(60000/Interval));
         }
-
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine($"{Name} finished");
-        Console.ForegroundColor = ConsoleColor.White;
-
-
     }
 
     (double from, double to) GeneratedValueRange { get; set; }
@@ -49,4 +57,6 @@ public interface ISensor
         get;
         set;
     }
+    
+    string Topic { get; set; }
 }

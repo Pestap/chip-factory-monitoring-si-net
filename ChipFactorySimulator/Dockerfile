@@ -15,4 +15,5 @@ RUN dotnet publish "ChipFactorySimulator.csproj" -c Release -o /app/publish /p:U
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN mkdir /generator_config
 ENTRYPOINT ["dotnet", "ChipFactorySimulator.dll"]

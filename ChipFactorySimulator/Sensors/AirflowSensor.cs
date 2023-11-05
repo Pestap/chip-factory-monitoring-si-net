@@ -1,16 +1,16 @@
+using MQTTnet.Client;
+
 namespace ChipFactorySimulator.Sensors;
 
 public class AirflowSensor : ISensor
 {
-    public void PublishData()
-    {
-        throw new NotImplementedException();
-    }
 
     public string GetInfo()
     {
         return $"Airflow sensor (id={Id}), unit={UnitOfMeasurement}";
     }
+
+    public IMqttClient MqttClient { get; set; }
 
     public AirflowSensor(string name, double valueFrom, double valueTo, double interval)
     {
@@ -20,6 +20,7 @@ public class AirflowSensor : ISensor
         GeneratedSetValue = Convert.ToDouble(Environment.GetEnvironmentVariable("AIRFLOW_SENSOR_VALUE_SINET"));
         UnitOfMeasurement = "m/s";
         Interval = interval;
+        Topic = $"sensors/airflow/{name}";
     }
     public (double from, double to) GeneratedValueRange { get; set; }
     public double Interval { get; set; }
@@ -27,4 +28,5 @@ public class AirflowSensor : ISensor
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string UnitOfMeasurement { get; set; }
+    public string Topic { get; set; }
 }
