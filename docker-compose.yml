@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mqtt_broker:
+    image: eclipse-mosquitto:2.0.18
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/log:/mosquitto/log
+      - ./mosquitto/data:/mosquitto/data
+    ports:
+      - 1883:1883
+      - 9001:9001
+  mqtt_pub:
+    image: eclipse-mosquitto:2.0.18
+    command: sh -c "mosquitto_pub -h mqtt_broker -t test -m 'Hello World' -u admin -P password"
+    depends_on:
+      - mqtt_broker
+  mqtt_sub:
+    image: eclipse-mosquitto:2.0.18
+    command: sh -c "mosquitto_sub -h mqtt_broker -t test -u admin -P password"
+    depends_on:
+      - mqtt_broker
