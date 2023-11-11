@@ -8,8 +8,8 @@ var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHostedService<MqttService>();
 builder.Services.Configure<SensorsDatabaseSettings>(builder.Configuration.GetSection("SensorsDatabase"));
-// TODO - CHANGE TO SCOPED SERVICE
-builder.Services.AddHostedService<SensorsService>();
+builder.Services.AddScoped<SensorsService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

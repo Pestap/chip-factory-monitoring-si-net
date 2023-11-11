@@ -1,37 +1,38 @@
-﻿namespace WebApplication.Services;
+﻿using MongoDB.Bson;
+using WebApplication.Models;
+
+namespace WebApplication.Services;
 using MQTTnet;
 using MQTTnet.Client;
 
 public class MqttService : BackgroundService 
 {
-    private ILogger<MqttService> _logger;
-    private IMqttClient mqttClient;
+    private readonly ILogger<MqttService> _logger;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IMqttClient _mqttClient;
     
-    public MqttService(ILogger<MqttService> logger)
+    public MqttService(ILogger<MqttService> logger, IServiceProvider serviceProvider)
     {
         _logger = logger;
+        _serviceProvider = serviceProvider;
         
         var factory = new MqttFactory();
         // Create a MQTT client instance
-        mqttClient = factory.CreateMqttClient();
-        mqttClient.ConnectedAsync += HandleConnectedAsync;
-        mqttClient.ApplicationMessageReceivedAsync += HandleApplicationMessageReceivedAsync;
-        Init();
+        _mqttClient = factory.CreateMqttClient();
+        _mqttClient.ConnectedAsync += HandleConnectedAsync;
+        _mqttClient.ApplicationMessageReceivedAsync += HandleApplicationMessageReceivedAsync;
     }
-
-    public void Init()
-    {
-    }
+    
     public async Task HandleConnectedAsync(MqttClientConnectedEventArgs eventArgs)
     {
         _logger.LogInformation("connected - subscribing");
 
         for (var i = 1; i < 4; i++)
         {
-            await mqttClient.SubscribeAsync($"sensors/humidity/h{i}");
-            await mqttClient.SubscribeAsync($"sensors/dust/d{i}");
-            await mqttClient.SubscribeAsync($"sensors/airflow/a{i}");
-            await mqttClient.SubscribeAsync($"sensors/temperature/t{i}");
+            await _mqttClient.SubscribeAsync($"sensors/humidity/h{i}");
+            await _mqttClient.SubscribeAsync($"sensors/dust/d{i}");
+            await _mqttClient.SubscribeAsync($"sensors/airflow/a{i}");
+            await _mqttClient.SubscribeAsync($"sensors/temperature/t{i}");
         }
         _logger.LogInformation("subscribed");
     }
@@ -40,13 +41,25 @@ public class MqttService : BackgroundService
         _logger.LogInformation("MESSAGE RECIEVED");
         var payload = System.Text.Encoding.Default.GetString(eventArgs.ApplicationMessage.PayloadSegment);
         var data = payload.Split(";");
-        
+        var topicParts = eventArgs.ApplicationMessage.Topic.Split("/");
+
+        var topic = topicParts[1];
         var name = data[0];
         var value = double.Parse(data[1], System.Globalization.CultureInfo.InvariantCulture);
         var unitOfMeasurement = data[2];
         var time = Convert.ToDateTime(data[3]);
+        Console.WriteLine($"{topic}-{name}-{value}-{unitOfMeasurement}-{time}");
+
+        using (IServiceScope scope = _serviceProvider.CreateScope())
+        {
+            SensorsService sensorsService = scope.ServiceProvider.GetRequiredService<SensorsService>();
+
+            SensorValue newSensorValue = new SensorValue(ObjectId.GenerateNewId().ToString(),
+                name, unitOfMeasurement, topic, value);
+
+            sensorsService.Create(newSensorValue);
+        }
         
-        Console.WriteLine($"{name}-{value}-{unitOfMeasurement}-{time}");
         return Task.CompletedTask;
     }
 
@@ -70,7 +83,7 @@ public class MqttService : BackgroundService
             .WithClientId("Client")
             .WithCleanSession()
             .Build();
-        var connectResult = await mqttClient.ConnectAsync(options);
+        var connectResult = await _mqttClient.ConnectAsync(options);
         _logger.LogInformation("Connected " + connectResult.ResponseInformation);
         
         while(!cancellingToken.IsCancellationRequested) 

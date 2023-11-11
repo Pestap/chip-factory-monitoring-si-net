@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace WebApplication.Models;
 
-public class Sensor
+public class SensorValue
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -12,4 +12,17 @@ public class Sensor
     public string UnitOfMeasurement { get; set; } = null!;
     public string Topic { get; set; } = null!;
     public double Value { get; set; }
+
+    public SensorValue()
+    {
+        
+    }
+    public SensorValue(string? id, string name, string unitOfMeasurement, string topic, double value)
+    {
+        Id = id;
+        Name = name;
+        UnitOfMeasurement = unitOfMeasurement;
+        Topic = topic;
+        Value = value;
+    }
 }
