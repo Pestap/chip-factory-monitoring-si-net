@@ -1,3 +1,4 @@
+using WebApplication.Models;
 using WebApplication.Services;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
@@ -6,7 +7,9 @@ var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHostedService<MqttService>();
-
+builder.Services.Configure<SensorsDatabaseSettings>(builder.Configuration.GetSection("SensorsDatabase"));
+// TODO - CHANGE TO SCOPED SERVICE
+builder.Services.AddHostedService<SensorsService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
