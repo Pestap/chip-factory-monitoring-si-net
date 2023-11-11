@@ -20,4 +20,7 @@ public class SensorsService
     
     public void Create(SensorValue newSensorValue) =>
         _sensorsValuesCollection.InsertOne(newSensorValue);
+    
+    public async Task<List<SensorValue>> GetAllAsync() =>
+        await _sensorsValuesCollection.Find(_ => true).ToListAsync();
 }

@@ -1238,3 +1238,73 @@ To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
 1699727407: Client auto-AABEBFE7-EB45-F6BA-F292-882CEE1890CF disconnected.
 1699727410: mosquitto version 2.0.18 terminating
 1699727410: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1699728045: mosquitto version 2.0.18 starting
+1699728045: Config loaded from /mosquitto/config/mosquitto.conf.
+1699728045: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1699728045: Opening ipv4 listen socket on port 1883.
+1699728045: Opening ipv6 listen socket on port 1883.
+1699728045: mosquitto version 2.0.18 running
+1699728045: New connection from 172.22.0.5:44156 on port 1883.
+1699728045: New client connected from 172.22.0.5:44156 as auto-BD4A6124-71E5-1C2B-7343-EF5CF783ACD7 (p2, c1, k60, u'admin').
+1699728046: New connection from 172.22.0.6:53616 on port 1883.
+1699728046: New client connected from 172.22.0.6:53616 as auto-BFEEB32A-C309-9543-705B-35F64B1534A8 (p2, c1, k60, u'admin').
+1699728046: Client auto-BFEEB32A-C309-9543-705B-35F64B1534A8 disconnected.
+1699728046: New connection from 172.22.0.8:38236 on port 1883.
+1699728046: New client connected from 172.22.0.8:38236 as auto-606C9FB6-2E60-C47E-E617-998518D990CC (p2, c1, k60, u'admin').
+1699728046: New connection from 172.22.0.7:58406 on port 1883.
+1699728046: New client connected from 172.22.0.7:58406 as auto-55D9A512-BA1A-3119-EAC7-3ED4A1DE8B4B (p2, c1, k60, u'admin').
+1699728047: New connection from 172.22.0.9:38486 on port 1883.
+1699728047: New client connected from 172.22.0.9:38486 as auto-72AD7573-C06D-61DA-C3B9-FFA53F277EBB (p2, c1, k60, u'admin').
+1699728047: New connection from 172.22.0.10:55944 on port 1883.
+1699728047: New client connected from 172.22.0.10:55944 as Generator (p2, c1, k15, u'admin').
+1699728400: New connection from 172.22.0.1:43040 on port 1883.
+1699728400: New client connected from 172.22.0.1:43040 as Client (p2, c1, k15, u'admin').
+1699728537: Client Client closed its connection.
+1699729135: New connection from 172.22.0.1:58982 on port 1883.
+1699729135: New client connected from 172.22.0.1:58982 as Client (p2, c1, k15, u'admin').
+1699729197: Client Client closed its connection.
+1699729361: New connection from 172.22.0.1:35270 on port 1883.
+1699729361: New client connected from 172.22.0.1:35270 as Client (p2, c1, k15, u'admin').
+1699729403: Client Client closed its connection.
+1699729563: New connection from 172.22.0.1:52580 on port 1883.
+1699729563: New client connected from 172.22.0.1:52580 as Client (p2, c1, k15, u'admin').
+1699729586: Client Client closed its connection.
+1699729816: New connection from 172.22.0.1:41174 on port 1883.
+1699729816: New client connected from 172.22.0.1:41174 as Client (p2, c1, k15, u'admin').
+1699729846: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1699729874: Client Client closed its connection.
+1699730465: Client auto-72AD7573-C06D-61DA-C3B9-FFA53F277EBB disconnected.
+1699730465: Client auto-55D9A512-BA1A-3119-EAC7-3ED4A1DE8B4B disconnected.
+1699730465: mosquitto version 2.0.18 terminating
+1699730465: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1699739858: mosquitto version 2.0.18 starting
+1699739858: Config loaded from /mosquitto/config/mosquitto.conf.
+1699739858: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1699739858: Opening ipv4 listen socket on port 1883.
+1699739858: Opening ipv6 listen socket on port 1883.
+1699739858: mosquitto version 2.0.18 running
+1699739858: New connection from 172.19.0.5:59520 on port 1883.
+1699739858: New client connected from 172.19.0.5:59520 as auto-DF2C6CD7-356F-00DE-9DA7-CF8399D78BB1 (p2, c1, k60, u'admin').
+1699739858: New connection from 172.19.0.6:40696 on port 1883.
+1699739858: New client connected from 172.19.0.6:40696 as auto-8A90A33A-4451-4FC8-87C1-F0D3E421A2B9 (p2, c1, k60, u'admin').
+1699739859: New connection from 172.19.0.7:47606 on port 1883.
+1699739859: New client connected from 172.19.0.7:47606 as auto-0580D0F6-E052-12EC-C5CE-BF369A4A1028 (p2, c1, k60, u'admin').
+1699739859: New connection from 172.19.0.8:41428 on port 1883.
+1699739859: New client connected from 172.19.0.8:41428 as auto-7BDEED33-4FB2-1668-0ED5-59D16D59ABE6 (p2, c1, k60, u'admin').
+1699739859: Client auto-7BDEED33-4FB2-1668-0ED5-59D16D59ABE6 disconnected.
+1699739859: New connection from 172.19.0.9:52028 on port 1883.
+1699739859: New client connected from 172.19.0.9:52028 as auto-A979B00E-B5BE-42F6-6AA8-B656619B2EEA (p2, c1, k60, u'admin').
+1699739860: New connection from 172.19.0.10:50834 on port 1883.
+1699739860: New client connected from 172.19.0.10:50834 as Generator (p2, c1, k15, u'admin').
+1699739873: New connection from 172.19.0.1:58400 on port 1883.
+1699739873: New client connected from 172.19.0.1:58400 as Client (p2, c1, k15, u'admin').
+1699740202: Client Client closed its connection.
+1699740220: Client auto-0580D0F6-E052-12EC-C5CE-BF369A4A1028 disconnected.
+1699740220: Client auto-8A90A33A-4451-4FC8-87C1-F0D3E421A2B9 disconnected.
+1699740220: Client auto-DF2C6CD7-356F-00DE-9DA7-CF8399D78BB1 disconnected.
+1699740220: Client Generator closed its connection.
+1699740220: Client auto-A979B00E-B5BE-42F6-6AA8-B656619B2EEA disconnected.
+1699740222: mosquitto version 2.0.18 terminating
+1699740222: Saving in-memory database to /mosquitto/data//mosquitto.db.
