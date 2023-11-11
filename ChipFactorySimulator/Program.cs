@@ -19,7 +19,7 @@ Console.WriteLine($"{user} - {password}");
 Console.WriteLine($"{mqtt_broker} - broker");
 Console.WriteLine($"{port} - port");
 
-
+Thread.Sleep((int)(1000 * 60);
 
 var factory = new MqttFactory();
 

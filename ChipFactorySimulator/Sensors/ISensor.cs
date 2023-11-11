@@ -37,10 +37,10 @@ public interface ISensor
     
     void StartGenerating()
     {
-        for (var i = 0; i < 3; i++)
+        while (true)
         {
             PublishData(GenerateDataPoint(), DateTime.Now);
-            Thread.Sleep((int)(60000/Interval));
+            Thread.Sleep((int)(600000/Interval));
         }
     }
 

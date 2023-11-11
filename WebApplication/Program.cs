@@ -1,8 +1,11 @@
+using WebApplication.Services;
+
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHostedService<MqttService>();
 
 var app = builder.Build();
 
