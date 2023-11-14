@@ -55,7 +55,7 @@ public class MqttService : BackgroundService
             SensorsService sensorsService = scope.ServiceProvider.GetRequiredService<SensorsService>();
 
             SensorValue newSensorValue = new SensorValue(ObjectId.GenerateNewId().ToString(),
-                name, unitOfMeasurement, topic, value);
+                name, unitOfMeasurement, topic, value, time);
 
             sensorsService.Create(newSensorValue);
         }
