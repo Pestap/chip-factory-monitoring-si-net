@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Globalization;
+using MongoDB.Bson;
 using WebApplication.Models;
 
 namespace WebApplication.Services;
@@ -27,27 +28,24 @@ public class MqttService : BackgroundService
     {
         _logger.LogInformation("connected - subscribing");
 
-        for (var i = 1; i < 4; i++)
-        {
-            await _mqttClient.SubscribeAsync($"sensors/humidity/h{i}");
-            await _mqttClient.SubscribeAsync($"sensors/dust/d{i}");
-            await _mqttClient.SubscribeAsync($"sensors/airflow/a{i}");
-            await _mqttClient.SubscribeAsync($"sensors/temperature/t{i}");
-        }
+        await _mqttClient.SubscribeAsync($"sensors/humidity/#");
+        await _mqttClient.SubscribeAsync($"sensors/dust/#");
+        await _mqttClient.SubscribeAsync($"sensors/airflow/#");
+        await _mqttClient.SubscribeAsync($"sensors/temperature/#");
+        
         _logger.LogInformation("subscribed");
     }
     public Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
     {
-        _logger.LogInformation("MESSAGE RECIEVED");
+        _logger.LogInformation("MESSAGE RECEIVED");
         var payload = System.Text.Encoding.Default.GetString(eventArgs.ApplicationMessage.PayloadSegment);
         var data = payload.Split(";");
         var topicParts = eventArgs.ApplicationMessage.Topic.Split("/");
-
         var topic = topicParts[1];
         var name = data[0];
         var value = double.Parse(data[1], System.Globalization.CultureInfo.InvariantCulture);
         var unitOfMeasurement = data[2];
-        var time = Convert.ToDateTime(data[3]);
+        var time = Convert.ToDateTime(data[3], new DateTimeFormatInfo());
         Console.WriteLine($"{topic}-{name}-{value}-{unitOfMeasurement}-{time}");
 
         using (IServiceScope scope = _serviceProvider.CreateScope())
@@ -65,17 +63,16 @@ public class MqttService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken cancellingToken) 
     {
-        /*
-         TODO - Change hardcoded values for environmental variables later
+        // TODO - Comment these 4 lines later
+        Environment.SetEnvironmentVariable("MQTT_USER_SINET", "admin");
+        Environment.SetEnvironmentVariable("MQTT_PASSWORD_SINET", "password");
+        Environment.SetEnvironmentVariable("MQTT_BROKER_SINET", "localhost");
+        Environment.SetEnvironmentVariable("MQTT_PORT_SINET", "1883");
+        
         string user = Environment.GetEnvironmentVariable("MQTT_USER_SINET");
         string password = Environment.GetEnvironmentVariable("MQTT_PASSWORD_SINET");
         string mqtt_broker = Environment.GetEnvironmentVariable("MQTT_BROKER_SINET");
         int port = Convert.ToInt32(Environment.GetEnvironmentVariable("MQTT_PORT_SINET"));
-        */
-        string user = "admin";
-        string password = "password";
-        string mqtt_broker = "localhost";
-        int port = 1883;
         
         var options = new MqttClientOptionsBuilder()
             .WithTcpServer(mqtt_broker, port) // MQTT broker address and port
