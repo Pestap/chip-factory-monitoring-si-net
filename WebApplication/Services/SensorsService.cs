@@ -17,10 +17,19 @@ public class SensorsService
 
         _sensorsValuesCollection = mongoDatabase.GetCollection<SensorValue>(sensorsDatabaseSettings.Value.SensorValuesCollectionName);
     }
-    
-    public void Create(SensorValue newSensorValue) =>
+
+    public void Create(SensorValue newSensorValue)
+    {
         _sensorsValuesCollection.InsertOne(newSensorValue);
-    
-    public async Task<List<SensorValue>> GetAllAsync() =>
-        await _sensorsValuesCollection.Find(_ => true).ToListAsync();
+    }
+
+
+    public async Task<List<SensorValue>> GetAllAsync(string type)
+    {
+        if (type == "")
+        {
+            return await _sensorsValuesCollection.Find( _ => true).ToListAsync();
+        }
+        return await _sensorsValuesCollection.Find(Builders<SensorValue>.Filter.Eq(v=> v.Topic, type)).ToListAsync();
+    }
 }

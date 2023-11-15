@@ -7,34 +7,9 @@ services:
       - ./mosquitto/config:/mosquitto/config
       - ./mosquitto/log:/mosquitto/log
       - ./mosquitto/data:/mosquitto/data
-    ports:
-      - 1883:1883
-      - 9001:9001
-  mqtt_pub:
-    image: eclipse-mosquitto:2.0.18
-    command: sh -c "mosquitto_pub -h mqtt_broker -t sensors -m 'Hello World' -u admin -P password"
-    depends_on:
-      - mqtt_broker
-  mqtt_sub_humid:
-    image: eclipse-mosquitto:2.0.18
-    command: sh -c "mosquitto_sub -h mqtt_broker -t sensors/humidity/# -u admin -P password"
-    depends_on:
-      - mqtt_broker
-  mqtt_sub_airflow:
-    image: eclipse-mosquitto:2.0.18
-    command: sh -c "mosquitto_sub -h mqtt_broker -t sensors/airflow/# -u admin -P password"
-    depends_on:
-      - mqtt_broker
-  mqtt_sub_dust:
-    image: eclipse-mosquitto:2.0.18
-    command: sh -c "mosquitto_sub -h mqtt_broker -t sensors/dust/# -u admin -P password"
-    depends_on:
-      - mqtt_broker
-  mqtt_sub_temp:
-    image: eclipse-mosquitto:2.0.18
-    command: sh -c "mosquitto_sub -h mqtt_broker -t sensors/temperature/# -u admin -P password"
-    depends_on:
-      - mqtt_broker
+    #ports:
+    #  - 1883:1883
+    #  - 9001:9001
   generator:
     build: ChipFactorySimulator
     environment:
@@ -42,16 +17,31 @@ services:
       - MQTT_PASSWORD_SINET=password
       - MQTT_BROKER_SINET=mqtt_broker
       - MQTT_PORT_SINET=1883
+      - SINET_POINTS_PER_SENSOR=2
     volumes:
       - ./generator_config:/generator_config
     depends_on:
       - mqtt_broker
+  backend:
+    build: WebApplication
+    depends_on:
+      - mqtt_broker
+    environment:
+      - MQTT_USER_SINET=admin
+      - MQTT_PASSWORD_SINET=password
+      - MQTT_BROKER_SINET=mqtt_broker
+      - MQTT_PORT_SINET=1883
+      - MONGO_CONNECTION_STRING=mongodb://root:example@mongo:27017/
+    ports:
+      - 7063:7063
+      - 80:80
+      - 443:443
   mongo:
     image: mongo
     volumes:
       - ./mongo/data:/data/db
-    ports:
-      - 27017:27017
+    #ports:
+    #  - 27017:27017
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root

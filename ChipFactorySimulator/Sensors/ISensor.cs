@@ -19,9 +19,9 @@ public interface ISensor
     string GetInfo();
     IMqttClient MqttClient { get; set; }
 
-    double GenerateDataPoint(bool random=true)
+    double GenerateDataPoint()
     {
-        return random ? GenerateRandomDataPoint() : GenerateSetDataPoint();
+        return IsRandom ? GenerateRandomDataPoint() : GenerateSetDataPoint();
     }
 
     double GenerateRandomDataPoint()
@@ -37,10 +37,12 @@ public interface ISensor
     
     void StartGenerating()
     {
-        while (true)
+        int i = 0;
+        while (i++< Convert.ToInt64(Environment.GetEnvironmentVariable("SINET_POINTS_PER_SENSOR")))
         {
             PublishData(GenerateDataPoint(), DateTime.Now);
-            Thread.Sleep((int)(600000/Interval));
+            Thread.Sleep((int)(60000/Interval));
+            
         }
     }
 
@@ -48,6 +50,8 @@ public interface ISensor
     double Interval { get; set; }
 
     double GeneratedSetValue { get; set; }
+    
+    bool IsRandom { get; set; }
 
     Guid Id { get; set; }
 

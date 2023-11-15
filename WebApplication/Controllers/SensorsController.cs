@@ -16,8 +16,9 @@ public class SensorsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<SensorValue>> GetAllSensorsValues()
+    public async Task<List<SensorValue>> GetAllSensors(string type="")
     {
-        return await _sensorsService.GetAllAsync();
+        return await _sensorsService.GetAllAsync(type);
     }
+    
 }

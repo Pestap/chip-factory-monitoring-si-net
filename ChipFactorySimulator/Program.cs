@@ -7,7 +7,6 @@ using ChipFactorySimulator.Utils;
 using MQTTnet;
 using MQTTnet.Client;
 
-Environment.SetEnvironmentVariable("TEMP_SENSOR_VALUE_SINET", "20");
 
 string user = Environment.GetEnvironmentVariable("MQTT_USER_SINET");
 string password = Environment.GetEnvironmentVariable("MQTT_PASSWORD_SINET");
@@ -18,8 +17,6 @@ int port = Convert.ToInt32(Environment.GetEnvironmentVariable("MQTT_PORT_SINET")
 Console.WriteLine($"{user} - {password}");
 Console.WriteLine($"{mqtt_broker} - broker");
 Console.WriteLine($"{port} - port");
-
-Thread.Sleep((int)(1000 * 60);
 
 var factory = new MqttFactory();
 

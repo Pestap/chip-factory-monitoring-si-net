@@ -12,7 +12,7 @@ public class DustSensor : ISensor
 
     public IMqttClient MqttClient { get; set; }
 
-    public DustSensor(string name, double valueFrom, double valueTo, double interval)
+    public DustSensor(string name, double valueFrom, double valueTo, double interval, bool isRandom)
     {
         Name = name;
         Id = Guid.NewGuid();
@@ -20,12 +20,14 @@ public class DustSensor : ISensor
         GeneratedSetValue = Convert.ToDouble(Environment.GetEnvironmentVariable("HUMIDITY_SENSOR_VALUE_SINET"));
         UnitOfMeasurement = "µg/m3";
         Interval = interval;
+        IsRandom = isRandom;
         Topic = $"sensors/dust/{name}";
         
     }
     public (double from, double to) GeneratedValueRange { get; set; }
     public double Interval { get; set; }
     public double GeneratedSetValue { get; set; }
+    public bool IsRandom { get; set; }
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string UnitOfMeasurement { get; set; }

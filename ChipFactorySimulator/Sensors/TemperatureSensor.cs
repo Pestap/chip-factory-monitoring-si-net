@@ -14,7 +14,7 @@ public class TemperatureSensor : ISensor
 
     public IMqttClient MqttClient { get; set; }
 
-    public TemperatureSensor(string name, double valueFrom, double valueTo, double interval)
+    public TemperatureSensor(string name, double valueFrom, double valueTo, double interval, bool isRandom)
     {
         Name = name;
         Id = Guid.NewGuid();
@@ -22,9 +22,11 @@ public class TemperatureSensor : ISensor
         GeneratedSetValue = Convert.ToDouble(Environment.GetEnvironmentVariable("TEMP_SENSOR_VALUE_SINET"));
         UnitOfMeasurement = "K";
         Interval = interval;
+        IsRandom = isRandom;
         Topic = $"sensors/temperature/{name}";
     }
-    
+
+    public bool IsRandom { get; set; }
     public Guid Id { get; set; }
     public string Name { get; set; }
 

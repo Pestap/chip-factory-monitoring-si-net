@@ -12,7 +12,7 @@ public class HumiditySensor : ISensor
 
     public IMqttClient MqttClient { get; set; }
 
-    public HumiditySensor(string name, double valueFrom, double valueTo, double interval)
+    public HumiditySensor(string name, double valueFrom, double valueTo, double interval, bool isRandom)
     {
         Name = name;
         Id = Guid.NewGuid();
@@ -20,11 +20,13 @@ public class HumiditySensor : ISensor
         GeneratedSetValue = Convert.ToDouble(Environment.GetEnvironmentVariable("HUMIDITY_SENSOR_VALUE_SINET"));
         UnitOfMeasurement = "%";
         Interval = interval;
+        IsRandom = isRandom;
         Topic = $"sensors/humidity/{name}";
     }
     public (double from, double to) GeneratedValueRange { get; set; }
     public double Interval { get; set; }
     public double GeneratedSetValue { get; set; }
+    public bool IsRandom { get; set; }
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string UnitOfMeasurement { get; set; }

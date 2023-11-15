@@ -21,31 +21,41 @@ public class FileUtils
             string currentLine;
             while((currentLine = sr.ReadLine()) != "" && currentLine != null)
             {
-                var values = currentLine.Split(";");
+                var values = currentLine.Split(",");
                 var type = values[0];
                 var name = values[1];
                 var from = Convert.ToDouble(values[2], provider);
                 var to = Convert.ToDouble(values[3], provider);
                 var interval = Convert.ToDouble(values[4], provider);
                 var israndom = Convert.ToBoolean(values[5]);
+                var setValue = 0.0;
+                if (!israndom)
+                {
+                    setValue = Convert.ToDouble(values[6], provider);
+                }
 
+                ISensor sensor = null;
+                
                 switch (type)
                 {
                     case "temperature":
-                        sensors.Add(new TemperatureSensor(name, from,to, interval));
+                        sensor = new TemperatureSensor(name, from,to, interval, israndom);
                         break;
                     case "humidity":
-                        sensors.Add(new HumiditySensor(name, from,to, interval));
+                        sensor = new HumiditySensor(name, from,to, interval, israndom);
                         break;
                     case "dust":
-                        sensors.Add(new DustSensor(name, from,to, interval));
+                        sensor = new DustSensor(name, from,to, interval, israndom);
                         break;
                     case "airflow":
-                        sensors.Add(new AirflowSensor(name, from,to, interval));
-                        break;
-                    default:
+                        sensor = new AirflowSensor(name, from,to, interval, israndom);
                         break;
                 }
+
+                sensor.GeneratedSetValue = setValue;
+                
+                sensors.Add(sensor);
+
             }
         }
 

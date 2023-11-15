@@ -2,7 +2,11 @@
 
 public class SensorsDatabaseSettings
 {
-    public string ConnectionString { get; set; } = null!;
+    public string ConnectionString
+    {
+        get { return Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING");}
+        set { Environment.SetEnvironmentVariable("MONGO_CONNECTION_STRING", value);}
+    }
 
     public string DatabaseName { get; set; } = null!;
 
