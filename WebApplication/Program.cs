@@ -10,6 +10,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHostedService<MqttService>();
 builder.Services.Configure<SensorsDatabaseSettings>(builder.Configuration.GetSection("SensorsDatabase"));
 builder.Services.AddScoped<SensorsService>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+        });
+});
 builder.Services.AddSignalR(options =>
 {
     options.HandshakeTimeout = TimeSpan.FromSeconds(5);
@@ -30,6 +38,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors();
 
 
 app.MapControllerRoute(

@@ -1,19 +1,34 @@
-﻿import { Container, Row, Col } from 'reactstrap';
+﻿import {Container, Row, Col, Input, Label} from 'reactstrap';
 import { useState, useEffect } from "react";
 
 function Sensors() {
     const [isLoading, setIsLoading] = useState(true);
     const [sensorsData, setSensorsData] = useState([]);
+    const [sortTypes, setSortTypes] = useState({});
+    
+    const [chosenSortType, setChosenSortType] = useState("");
 
     useEffect(() => {
-        fetch('api/sensors')
+        
+        let resource = 'http://localhost:80/api/sensors';
+        if ( chosenSortType !== "") {
+            resource+= "?sort-by=" + chosenSortType
+        }
+        console.log(resource);
+        fetch(resource)
             .then(response => response.json())
             .then(data => {
                 setSensorsData(data);
                 setIsLoading(false);
             })
             .catch(error => console.error(error));
-    }, []);
+        fetch('http://localhost:80/api/sensors/sort-types')
+            .then(response => response.json())
+            .then(data => {
+                setSortTypes(data);
+            })
+            .catch(error => console.error(error));
+    }, [chosenSortType]);
     
     function sensorsValuesTable() {
         return (
@@ -29,7 +44,7 @@ function Sensors() {
                 </thead>
                 <tbody>
                 {sensorsData.map(sensorData =>
-                    <tr key={sensorData.time}>
+                    <tr key={sensorData.id}>
                         <td>{sensorData.topic}</td>
                         <td>{sensorData.name}</td>
                         <td>{sensorData.value}</td>
@@ -56,9 +71,28 @@ function Sensors() {
                 </Col>
                 <Col xs={9}>
                     <h2 id="secondTableLabel">Data:</h2>
-                    {isLoading 
-                        ? <p><em>Loading...</em></p> 
-                        : <div className="table-responsive">{sensorsValuesTable()}</div>
+                    {isLoading
+                        ? <p><em>Loading...</em></p>
+                        : <div>
+                            <Row>
+                                <Col xs={4}>
+                                    <Label for="exampleSelect">Sort by:</Label>
+                                    <Input
+                                        id="exampleSelect"
+                                        name="select"
+                                        type="select"
+                                        onChange={e => setChosenSortType(e.target.value)}
+                                    >
+                                        {Object.keys(sortTypes).map( sortTypeKey =>
+                                            <option key={sortTypeKey} value={sortTypeKey}>
+                                                {sortTypes[sortTypeKey]}
+                                            </option>
+                                        )}
+                                    </Input>
+                                </Col>
+                            </Row>
+                            <div className="table-responsive">{sensorsValuesTable()}</div>
+                        </div>
                     }
                 </Col>
             </Row>

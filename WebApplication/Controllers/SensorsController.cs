@@ -17,14 +17,19 @@ public class SensorsController : ControllerBase
 
     [HttpGet]
     public async Task<List<SensorValue>> GetAllSensors(
+        [FromQuery(Name = "sort-by")] SensorsSortTypes sortType,
         string type= "",
         string name="",
         string dateFrom ="",
-        string dateTo="",
-        string sortedBy="",
-        string sortDirection="asc")
+        string dateTo="")
     {
-        return await _sensorsService.GetAllAsync(type, name, dateFrom, dateTo, sortedBy, sortDirection);
+        return await _sensorsService.GetAllAsync(sortType, type, name, dateFrom, dateTo);
     }
     
+    [HttpGet]
+    [Route("sort-types")]
+    public Dictionary<SensorsSortTypes, String> GetAllSortTypes()
+    {
+        return _sensorsService.GetAllSortTypes();
+    }
 }
