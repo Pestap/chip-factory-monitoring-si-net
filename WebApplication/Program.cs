@@ -9,6 +9,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHostedService<MqttService>();
 builder.Services.Configure<SensorsDatabaseSettings>(builder.Configuration.GetSection("SensorsDatabase"));
 builder.Services.AddScoped<SensorsService>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+        });
+});
 
 var app = builder.Build();
 
@@ -23,6 +31,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors();
 
 app.MapControllerRoute(
     name: "default",

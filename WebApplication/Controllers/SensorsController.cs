@@ -16,9 +16,16 @@ public class SensorsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<SensorValue>> GetAllSensors(string type="")
+    public async Task<List<SensorValue>> GetAllSensors([FromQuery(Name = "sort-by")] SensorsSortTypes sortType, string type="")
     {
-        return await _sensorsService.GetAllAsync(type);
+        Console.WriteLine(sortType);
+        return await _sensorsService.GetAllAsync(sortType, type);
     }
     
+    [HttpGet]
+    [Route("sort-types")]
+    public Dictionary<SensorsSortTypes, String> GetAllSortTypes()
+    {
+        return _sensorsService.GetAllSortTypes();
+    }
 }
