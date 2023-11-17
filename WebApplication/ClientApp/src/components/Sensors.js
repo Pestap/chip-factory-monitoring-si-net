@@ -1,4 +1,4 @@
-﻿import {Container, Row, Col, Input, Label} from 'reactstrap';
+﻿import {Button, Container, Row, Col, Input, Label} from 'reactstrap';
 import { useState, useEffect } from "react";
 
 function Sensors() {
@@ -74,7 +74,7 @@ function Sensors() {
                     {isLoading
                         ? <p><em>Loading...</em></p>
                         : <div>
-                            <Row>
+                            <Row className="align-items-end">
                                 <Col xs={4}>
                                     <Label for="exampleSelect">Sort by:</Label>
                                     <Input
@@ -89,6 +89,24 @@ function Sensors() {
                                             </option>
                                         )}
                                     </Input>
+                                </Col>
+                                <Col xs={8}>
+                                    <Button
+                                        color="primary"
+                                        href={chosenSortType ? `http://localhost/api/sensors/csv?sort-by=${chosenSortType}` : "http://localhost/api/sensors/csv"}
+                                        tag="a"
+                                        className="pg-btn-download"
+                                    >
+                                        Pobierz do csv
+                                    </Button>
+                                    <Button
+                                        color="primary"
+                                        href={chosenSortType ? `http://localhost/api/sensors/json?sort-by=${chosenSortType}` : "http://localhost/api/sensors/json"}
+                                        tag="a"
+                                        className="pg-btn-download"
+                                    >
+                                        Pobierz do json
+                                    </Button>
                                 </Col>
                             </Row>
                             <div className="table-responsive">{sensorsValuesTable()}</div>
