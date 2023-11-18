@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Collections.Immutable;
+using System.Globalization;
+using Amazon.Runtime.Internal;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using WebApplication.Models;
@@ -24,12 +27,27 @@ public class SensorsService
     }
 
 
-    public async Task<List<SensorValue>> GetAllAsync(string type)
+    public async Task<List<SensorValue>> GetAllAsync(string type, string name)
     {
-        if (type == "")
+        var builder = Builders<SensorValue>.Filter;
+        var filter = builder.Empty;
+        
+        
+        if (type != "")
         {
-            return await _sensorsValuesCollection.Find( _ => true).ToListAsync();
+            filter &= builder.Eq(v => v.Topic, type);
         }
-        return await _sensorsValuesCollection.Find(Builders<SensorValue>.Filter.Eq(v=> v.Topic, type)).ToListAsync();
+
+        if (name != "")
+        {
+            filter &= builder.Eq(v => v.Name, name);
+        }
+
+        filter &= builder.Lte(v => v.Time,DateTime.ParseExact("17-11-2023", "d-M-yyyy", CultureInfo.InvariantCulture));
+        
+        
+        return await _sensorsValuesCollection.Find(filter).ToListAsync();
+        
+        
     }
 }
