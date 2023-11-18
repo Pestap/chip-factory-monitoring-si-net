@@ -70,9 +70,24 @@ public class SensorsService
         }
 
         //filter &= dateFilter;
+
+
+
+        if (sortBy != "" && sortDirection != "")
+        {
+            if (sortDirection == "asc")
+            {
+                return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortBy(e => e.Time).ToListAsync();
+            }
+            else
+            {
+                return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortByDescending(e => e.Time).ToListAsync();
+            }
+           
+        }
         
         
-        
+        // no sort
         return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).ToListAsync();
         
         
