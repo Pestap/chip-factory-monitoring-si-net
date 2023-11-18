@@ -27,26 +27,53 @@ public class SensorsService
     }
 
 
-    public async Task<List<SensorValue>> GetAllAsync(string type, string name)
+    public async Task<List<SensorValue>> GetAllAsync(string type, string name, string dateFrom, string dateTo, string sortBy, string sortDirection)
     {
         var builder = Builders<SensorValue>.Filter;
         var filter = builder.Empty;
         
         
+        
+        // type filtering
+
+        var typeFilter = builder.Empty;
         if (type != "")
         {
-            filter &= builder.Eq(v => v.Topic, type);
+            typeFilter &= builder.In(v => v.Topic, type.Split(","));
         }
 
+        
+
+        var nameFilter = builder.Empty;
         if (name != "")
         {
-            filter &= builder.Eq(v => v.Name, name);
+            nameFilter &= builder.In(v => v.Name, name.Split(","));
+        }
+        
+        // date filter
+        
+        var dateFilter = builder.Empty;
+
+        if (dateFrom != "")
+        {
+            var dateFromDate = DateTime.ParseExact(dateFrom, "yyyy-M-d'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture);
+            dateFilter &= builder.Gte(v => v.Time, dateFromDate);
+            
+
         }
 
-        filter &= builder.Lte(v => v.Time,DateTime.ParseExact("17-11-2023", "d-M-yyyy", CultureInfo.InvariantCulture));
+
+        if (dateTo != "")
+        {
+            var dateToDate = DateTime.ParseExact(dateTo, "yyyy-M-d'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture);
+            dateFilter &= builder.Lte(v => v.Time, dateToDate);
+        }
+
+        //filter &= dateFilter;
         
         
-        return await _sensorsValuesCollection.Find(filter).ToListAsync();
+        
+        return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).ToListAsync();
         
         
     }
