@@ -1,8 +1,12 @@
 ﻿import {Button, Container, Row, Col, Input, Label} from 'reactstrap';
 import { useState, useEffect } from "react";
+import {Await} from "react-router-dom";
 
 function Sensors() {
     const [isLoading, setIsLoading] = useState(true);
+    const [isDataLoading, setIsDataLoading] = useState(true);
+    const [areFiltersLoading, setAreFiltersLoading] = useState(true);
+    const [areSortTypesLoading, setAreSortTypesLoading] = useState(true);
     const [sensorsData, setSensorsData] = useState([]);
     const [sortTypes, setSortTypes] = useState({});
     
@@ -22,13 +26,19 @@ function Sensors() {
                 setIsLoading(false);
             })
             .catch(error => console.error(error));
+    }, [chosenSortType]);
+
+    useEffect(() => {
+
+        let resource = 'http://localhost:80/api/sensors';
         fetch('http://localhost:80/api/sensors/sort-types')
             .then(response => response.json())
             .then(data => {
                 setSortTypes(data);
+                setAreSortTypesLoading(false);
             })
             .catch(error => console.error(error));
-    }, [chosenSortType]);
+    }, []);
     
     function sensorsValuesTable() {
         return (
@@ -68,10 +78,16 @@ function Sensors() {
             <Row>
                 <Col xs={3}>
                     <h2>Filters:</h2>
+                    {areFiltersLoading
+                        ? <p><em>Loading...</em></p>
+                        : <form>
+                            
+                        </form>
+                    }
                 </Col>
                 <Col xs={9}>
                     <h2 id="secondTableLabel">Data:</h2>
-                    {isLoading
+                    {areSortTypesLoading
                         ? <p><em>Loading...</em></p>
                         : <div>
                             <Row className="align-items-end">
@@ -81,7 +97,7 @@ function Sensors() {
                                         id="exampleSelect"
                                         name="select"
                                         type="select"
-                                        onChange={e => setChosenSortType(e.target.value)}
+                                        onChange={e => {setChosenSortType(e.target.value); setIsLoading(false)}}
                                     >
                                         {Object.keys(sortTypes).map( sortTypeKey =>
                                             <option key={sortTypeKey} value={sortTypeKey}>
@@ -91,25 +107,30 @@ function Sensors() {
                                     </Input>
                                 </Col>
                                 <Col xs={8}>
-                                    <Button
-                                        color="primary"
-                                        href={chosenSortType ? `http://localhost/api/sensors/csv?sort-by=${chosenSortType}` : "http://localhost/api/sensors/csv"}
-                                        tag="a"
-                                        className="pg-btn-download"
-                                    >
-                                        Pobierz do csv
-                                    </Button>
-                                    <Button
-                                        color="primary"
-                                        href={chosenSortType ? `http://localhost/api/sensors/json?sort-by=${chosenSortType}` : "http://localhost/api/sensors/json"}
-                                        tag="a"
-                                        className="pg-btn-download"
-                                    >
-                                        Pobierz do json
-                                    </Button>
+                                    {!isLoading && <div>
+                                        <Button
+                                            color="primary"
+                                            href={chosenSortType ? `http://localhost/api/sensors/csv?sort-by=${chosenSortType}` : "http://localhost/api/sensors/csv"}
+                                            tag="a"
+                                            className="pg-btn-download"
+                                        >
+                                            Pobierz do csv
+                                        </Button>
+                                        <Button
+                                            color="primary"
+                                            href={chosenSortType ? `http://localhost/api/sensors/json?sort-by=${chosenSortType}` : "http://localhost/api/sensors/json"}
+                                            tag="a"
+                                            className="pg-btn-download"
+                                        >
+                                            Pobierz do json
+                                        </Button>
+                                    </div>}
                                 </Col>
                             </Row>
-                            <div className="table-responsive">{sensorsValuesTable()}</div>
+                            {isLoading
+                                ? <p><em>Loading...</em></p>
+                                : <div className="table-responsive">{sensorsValuesTable()}</div>
+                            }
                         </div>
                     }
                 </Col>
