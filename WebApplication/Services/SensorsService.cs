@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+using System.Linq.Expressions;
+using System.Collections.Immutable;
 using System.Globalization;
 using Amazon.Runtime.Internal;
 using Microsoft.AspNetCore.SignalR;
@@ -13,6 +14,7 @@ namespace WebApplication.Services;
 public class SensorsService
 {
     private readonly IMongoCollection<SensorValue> _sensorsValuesCollection;
+    private Dictionary<SensorsSortTypes, String> sortTypes;
     private readonly IHubContext<SensorHub> _hub;
 
     public SensorsService(IOptions<SensorsDatabaseSettings> sensorsDatabaseSettings, IHubContext<SensorHub> hub)
@@ -22,6 +24,17 @@ public class SensorsService
         var mongoDatabase = mongoClient.GetDatabase(sensorsDatabaseSettings.Value.DatabaseName);
 
         _sensorsValuesCollection = mongoDatabase.GetCollection<SensorValue>(sensorsDatabaseSettings.Value.SensorValuesCollectionName);
+        
+        sortTypes = new Dictionary<SensorsSortTypes, string>
+        {
+            { SensorsSortTypes.Default, "Default" },
+            { SensorsSortTypes.SortByDateAsc, "Sort by date ascending" },
+            { SensorsSortTypes.SortByDateDesc, "Sort by date descending" },
+            { SensorsSortTypes.SortByNameAsc , "Sort by name ascending"},
+            { SensorsSortTypes.SortByNameDesc, "Sort by name descending"},
+            { SensorsSortTypes.SortByValueAsc, "Sort by value ascending"},
+            { SensorsSortTypes.SortByValueDesc, "Sort by value descending"}
+        };
 
         _hub = hub;
 
@@ -34,12 +47,10 @@ public class SensorsService
     }
 
 
-    public async Task<List<SensorValue>> GetAllAsync(string type, string name, string dateFrom, string dateTo, string sortBy, string sortDirection)
+    public async Task<List<SensorValue>> GetAllAsync(SensorsSortTypes sortType, string type, string name, string dateFrom, string dateTo)
     {
         var builder = Builders<SensorValue>.Filter;
         var filter = builder.Empty;
-        
-        
         
         // type filtering
 
@@ -74,47 +85,43 @@ public class SensorsService
             var dateToDate = DateTime.ParseExact(dateTo, "yyyy-M-d'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture);
             dateFilter &= builder.Lte(v => v.Time, dateToDate);
         }
+
+        filter = typeFilter & nameFilter & dateFilter;
         
-        // sort
-        if (sortBy != "" && sortDirection != "")
+        if (type == "" && sortType != SensorsSortTypes.Default)
         {
-            switch (sortBy)
+            Expression<Func<SensorValue, object>> sortExpression = i => i.Value;
+            var ascending = !(sortType == SensorsSortTypes.SortByDateDesc || sortType == SensorsSortTypes.SortByNameDesc ||
+                               sortType == SensorsSortTypes.SortByValueDesc);
+            switch (sortType)
             {
-                case "type":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortBy(e => e.Topic).ToListAsync();
-                        case "dsc":
-                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortByDescending(e => e.Topic).ToListAsync();
-                    }
+                case SensorsSortTypes.SortByDateDesc:
+                case SensorsSortTypes.SortByDateAsc:
+                    sortExpression = i => i.Time;
                     break;
-                case "time":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortBy(e => e.Time).ToListAsync();
-                        case "dsc":
-                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortByDescending(e => e.Time).ToListAsync();
-                    }
+                case SensorsSortTypes.SortByNameDesc:
+                case SensorsSortTypes.SortByNameAsc:
+                    sortExpression = i => i.Name;
                     break;
-                case "name":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortBy(e => e.Name).ToListAsync();
-                        case "dsc":
-                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortByDescending(e => e.Name).ToListAsync();
-                    }
+                case SensorsSortTypes.SortByValueDesc:
+                case SensorsSortTypes.SortByValueAsc:
+                    sortExpression = i => i.Value;
                     break;
             }
+            
+            if(ascending)
+                return await _sensorsValuesCollection.Find( _ => true).SortBy(sortExpression).ToListAsync();
+            return await _sensorsValuesCollection.Find( _ => true).SortByDescending(sortExpression).ToListAsync();
         }
-        
+        if (type == "" && sortType == SensorsSortTypes.Default)
+        {
+            return await _sensorsValuesCollection.Find( _ => true).ToListAsync();
+        }
+        return await _sensorsValuesCollection.Find(Builders<SensorValue>.Filter.Eq(v=> v.Topic, type)).ToListAsync();
+    }
 
-
-        // no sort
-        return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).ToListAsync();
-        
-        
+    public Dictionary<SensorsSortTypes, String> GetAllSortTypes()
+    {
+        return sortTypes;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication.Models;
 using WebApplication.Services;
 
@@ -17,14 +18,49 @@ public class SensorsController : ControllerBase
 
     [HttpGet]
     public async Task<List<SensorValue>> GetAllSensors(
+        [FromQuery(Name = "sort-by")] SensorsSortTypes sortType,
         string type= "",
         string name="",
         string dateFrom ="",
-        string dateTo="",
-        string sortedBy="",
-        string sortDirection="asc")
+        string dateTo="")
     {
-        return await _sensorsService.GetAllAsync(type, name, dateFrom, dateTo, sortedBy, sortDirection);
+        return await _sensorsService.GetAllAsync(sortType, type, name, dateFrom, dateTo);
     }
     
+    [HttpGet]
+    [Route("sort-types")]
+    public Dictionary<SensorsSortTypes, String> GetAllSortTypes()
+    {
+        return _sensorsService.GetAllSortTypes();
+    }
+
+    [HttpGet]
+	[Route("json")]
+    public IActionResult GetAllSensorsJson([FromQuery(Name = "sort-by")] SensorsSortTypes sortType,
+        string type= "",
+        string name="",
+        string dateFrom ="",
+        string dateTo="")
+    {
+        HttpContext.Response.Headers.Add("Content-Disposition", "attachment; filename=values.json");
+        return new JsonResult(_sensorsService.GetAllAsync(sortType, type, name, dateFrom, dateTo).Result);
+    }
+    
+    [HttpGet]
+    [Route("csv")]
+    public IActionResult GetAllSensorsCsv([FromQuery(Name = "sort-by")] SensorsSortTypes sortType,
+        string type= "",
+        string name="",
+        string dateFrom ="",
+        string dateTo="")
+    {
+        HttpContext.Response.Headers.Add("Content-Disposition", "attachment; filename=values.csv");
+
+        String csvContent = "Type,Name,Value,Unit,Time\n";
+        _sensorsService.GetAllAsync(sortType, type, name, dateFrom, dateTo).Result.ForEach(sensorData=>
+        {
+            csvContent += $"{sensorData.Topic},{sensorData.Name},{sensorData.Value},{sensorData.UnitOfMeasurement},{sensorData.Time}\n";
+        });
+        return File(Encoding.UTF8.GetBytes(csvContent), "text/csv", "values.csv");
+    }
 }
