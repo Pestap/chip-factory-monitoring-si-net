@@ -1,6 +1,8 @@
 using System.Linq.Expressions;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.InteropServices.JavaScript;
 using Amazon.Runtime.Internal;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
@@ -153,5 +155,22 @@ public class SensorsService
     public Dictionary<SensorsSortTypes, String> GetAllSortTypes()
     {
         return sortTypes;
+    }
+    
+    public IEnumerable<String> GetAllNames()
+    {
+        ProjectionDefinition<SensorValue, String> projection = new FindExpressionProjectionDefinition<SensorValue, String>(v => v.Name);
+        List<String> namesList = _sensorsValuesCollection.Find( _ => true).Project(projection).ToList();
+        Console.WriteLine(namesList);
+        namesList.Sort();
+        return namesList.Distinct();
+    }
+    
+    public IEnumerable<String> GetAllTypes()
+    {
+        ProjectionDefinition<SensorValue, String> projection = new FindExpressionProjectionDefinition<SensorValue, String>(v => v.Topic);
+        List<String> typesList = _sensorsValuesCollection.Find( _ => true).Project(projection).ToList();
+        typesList.Sort();
+        return typesList.Distinct();
     }
 }

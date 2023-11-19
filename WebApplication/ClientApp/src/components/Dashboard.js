@@ -19,7 +19,7 @@ function Dashboard() {
 
     useEffect(() => {
 
-        let resource = 'http://localhost:80/api/sensors';
+        let resource = process.env.REACT_APP_BACKEND_URL +'/api/sensors';
         fetch(resource)
             .then(response => response.json())
             .then(data => {

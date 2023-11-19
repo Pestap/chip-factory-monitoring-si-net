@@ -33,6 +33,20 @@ public class SensorsController : ControllerBase
     {
         return _sensorsService.GetAllSortTypes();
     }
+    
+    [HttpGet]
+    [Route("sensors-names")]
+    public IEnumerable<String> GetAllNames()
+    {
+        return _sensorsService.GetAllNames();
+    }
+    
+    [HttpGet]
+    [Route("sensors-types")]
+    public IEnumerable<String> GetAllTypes()
+    {
+        return _sensorsService.GetAllTypes();
+    }
 
     [HttpGet]
 	[Route("json")]
