@@ -17,7 +17,7 @@ services:
       - MQTT_PASSWORD_SINET=password
       - MQTT_BROKER_SINET=mqtt_broker
       - MQTT_PORT_SINET=1883
-      - SINET_POINTS_PER_SENSOR=2
+      - SINET_POINTS_PER_SENSOR=25
     volumes:
       - ./generator_config:/generator_config
     depends_on:

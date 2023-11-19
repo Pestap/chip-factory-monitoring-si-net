@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
+using Microsoft.AspNetCore.SignalR;
 using MongoDB.Bson;
+using WebApplication.Hubs;
 using WebApplication.Models;
 
 namespace WebApplication.Services;
@@ -50,6 +52,7 @@ public class MqttService : BackgroundService
         using (IServiceScope scope = _serviceProvider.CreateScope())
         {
             SensorsService sensorsService = scope.ServiceProvider.GetRequiredService<SensorsService>();
+            
 
             SensorValue newSensorValue = new SensorValue(ObjectId.GenerateNewId().ToString(),
                 name, unitOfMeasurement, topic, value, time);

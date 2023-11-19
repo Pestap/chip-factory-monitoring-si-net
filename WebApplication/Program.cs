@@ -1,3 +1,4 @@
+using WebApplication.Hubs;
 using WebApplication.Models;
 using WebApplication.Services;
 
@@ -9,6 +10,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHostedService<MqttService>();
 builder.Services.Configure<SensorsDatabaseSettings>(builder.Configuration.GetSection("SensorsDatabase"));
 builder.Services.AddScoped<SensorsService>();
+builder.Services.AddSignalR(options =>
+{
+    options.HandshakeTimeout = TimeSpan.FromSeconds(5);
+    options.KeepAliveInterval = TimeSpan.FromSeconds(10);
+    options.EnableDetailedErrors = true;
+});
 
 var app = builder.Build();
 
@@ -24,10 +31,12 @@ app.UseStaticFiles();
 app.UseRouting();
 
 
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
+app.MapHub<SensorHub>("/sensorhub");
 
 app.Run();

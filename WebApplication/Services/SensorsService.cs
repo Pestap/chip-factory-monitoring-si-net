@@ -1,9 +1,11 @@
 ﻿using System.Collections.Immutable;
 using System.Globalization;
 using Amazon.Runtime.Internal;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using WebApplication.Hubs;
 using WebApplication.Models;
 
 namespace WebApplication.Services;
@@ -11,19 +13,24 @@ namespace WebApplication.Services;
 public class SensorsService
 {
     private readonly IMongoCollection<SensorValue> _sensorsValuesCollection;
+    private readonly IHubContext<SensorHub> _hub;
 
-    public SensorsService(IOptions<SensorsDatabaseSettings> sensorsDatabaseSettings)
+    public SensorsService(IOptions<SensorsDatabaseSettings> sensorsDatabaseSettings, IHubContext<SensorHub> hub)
     {
         var mongoClient = new MongoClient(sensorsDatabaseSettings.Value.ConnectionString);
 
         var mongoDatabase = mongoClient.GetDatabase(sensorsDatabaseSettings.Value.DatabaseName);
 
         _sensorsValuesCollection = mongoDatabase.GetCollection<SensorValue>(sensorsDatabaseSettings.Value.SensorValuesCollectionName);
+
+        _hub = hub;
+
     }
 
     public void Create(SensorValue newSensorValue)
     {
         _sensorsValuesCollection.InsertOne(newSensorValue);
+        _hub.Clients.All.SendAsync("SendSensor", newSensorValue.Name);
     }
 
 
@@ -62,31 +69,49 @@ public class SensorsService
 
         }
 
-
         if (dateTo != "")
         {
             var dateToDate = DateTime.ParseExact(dateTo, "yyyy-M-d'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture);
             dateFilter &= builder.Lte(v => v.Time, dateToDate);
         }
-
-        //filter &= dateFilter;
-
-
-
+        
+        // sort
         if (sortBy != "" && sortDirection != "")
         {
-            if (sortDirection == "asc")
+            switch (sortBy)
             {
-                return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortBy(e => e.Time).ToListAsync();
+                case "type":
+                    switch (sortDirection)
+                    {
+                        case "asc":
+                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortBy(e => e.Topic).ToListAsync();
+                        case "dsc":
+                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortByDescending(e => e.Topic).ToListAsync();
+                    }
+                    break;
+                case "time":
+                    switch (sortDirection)
+                    {
+                        case "asc":
+                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortBy(e => e.Time).ToListAsync();
+                        case "dsc":
+                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortByDescending(e => e.Time).ToListAsync();
+                    }
+                    break;
+                case "name":
+                    switch (sortDirection)
+                    {
+                        case "asc":
+                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortBy(e => e.Name).ToListAsync();
+                        case "dsc":
+                            return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortByDescending(e => e.Name).ToListAsync();
+                    }
+                    break;
             }
-            else
-            {
-                return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).SortByDescending(e => e.Time).ToListAsync();
-            }
-           
         }
         
-        
+
+
         // no sort
         return await _sensorsValuesCollection.Find(typeFilter & nameFilter & dateFilter).ToListAsync();
         
