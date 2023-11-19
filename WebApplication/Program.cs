@@ -9,7 +9,8 @@ var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHostedService<MqttService>();
 builder.Services.Configure<SensorsDatabaseSettings>(builder.Configuration.GetSection("SensorsDatabase"));
-builder.Services.AddScoped<SensorsService>();
+//builder.Services.AddScoped<SensorsService>();
+builder.Services.AddSingleton<SensorsService>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(

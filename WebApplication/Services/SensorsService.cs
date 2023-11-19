@@ -15,10 +15,13 @@ public class SensorsService
 {
     private readonly IMongoCollection<SensorValue> _sensorsValuesCollection;
     private Dictionary<SensorsSortTypes, String> sortTypes;
+    private Dictionary<string, List<SensorValue>> sensorValues;
     private readonly IHubContext<SensorHub> _hub;
+    private readonly ILogger<SensorsService> _logger;
 
-    public SensorsService(IOptions<SensorsDatabaseSettings> sensorsDatabaseSettings, IHubContext<SensorHub> hub)
+    public SensorsService(ILogger<SensorsService> logger,IOptions<SensorsDatabaseSettings> sensorsDatabaseSettings, IHubContext<SensorHub> hub)
     {
+        _logger = logger;
         var mongoClient = new MongoClient(sensorsDatabaseSettings.Value.ConnectionString);
 
         var mongoDatabase = mongoClient.GetDatabase(sensorsDatabaseSettings.Value.DatabaseName);
@@ -35,15 +38,42 @@ public class SensorsService
             { SensorsSortTypes.SortByValueAsc, "Sort by value ascending"},
             { SensorsSortTypes.SortByValueDesc, "Sort by value descending"}
         };
-
+        
+        Console.WriteLine("TEST INIT");
+        sensorValues = new Dictionary<string, List<SensorValue>>();
         _hub = hub;
 
     }
+        
+    private double CalculateAverageOfSensor(string sensorName)
+    {   
+        if (!sensorValues.ContainsKey(sensorName))
+        {
+            Console.WriteLine("INVALID NAME");
+            throw new ArgumentException("Invalid sensor name");
+        }
 
+        if (!sensorValues[sensorName].Any())
+        {
+            return 0;
+        }
+
+        return sensorValues[sensorName].Take(100).Select(item => item.Value).Average();
+
+    }
+    
     public void Create(SensorValue newSensorValue)
     {
+        if (!sensorValues.ContainsKey(newSensorValue.Name))
+        {
+            sensorValues[newSensorValue.Name] = new List<SensorValue>();
+        }
+        sensorValues[newSensorValue.Name].Add(newSensorValue); ;
+        
         _sensorsValuesCollection.InsertOne(newSensorValue);
-        _hub.Clients.All.SendAsync("SendSensor", newSensorValue.Name);
+        
+        _hub.Clients.All.SendAsync("SendSensorValue", $"{newSensorValue.Name},{newSensorValue.Value},{newSensorValue.UnitOfMeasurement}");
+        _hub.Clients.All.SendAsync("SendAverageValue", $"{newSensorValue.Name},{CalculateAverageOfSensor(newSensorValue.Name)},{newSensorValue.UnitOfMeasurement}");
     }
 
 
