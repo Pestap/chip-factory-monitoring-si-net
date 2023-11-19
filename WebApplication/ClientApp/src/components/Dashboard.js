@@ -1,21 +1,11 @@
 ﻿import { Container, Row, Col } from 'reactstrap';
 import { useState, useEffect } from "react";
-import useWebSocket from "react-use-websocket";
+import { HubConnectionBuilder, LogLevel} from "@microsoft/signalr";
+import {Await} from "react-router-dom";
 
 function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [sensorsData, setSensorsData] = useState([]);
-
-    const [socketUrl, setSocketUrl] = useState('');
-
-    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
-
-    useEffect(() => {
-        if (lastMessage !== null) {
-            console.log(lastMessage);
-        }
-    }, [lastMessage]);
-    
 
     useEffect(() => {
 
@@ -28,7 +18,17 @@ function Dashboard() {
             })
             .catch(error => console.error(error));
     }, []);
-
+    useEffect(() => {
+        const connection = new HubConnectionBuilder()
+            .withUrl( process.env.REACT_APP_BACKEND_URL +'/sensorhub')
+            .withAutomaticReconnect()
+            .build();
+        connection.on("SendSensorValue", (message) => {
+            console.log(message);
+        });
+        connection.start();
+    }, []);
+    
     function sensorsValuesTable() {
         return (
             <table className="table table-striped" aria-labelledby="tableLabel">
@@ -40,13 +40,6 @@ function Dashboard() {
                 </tr>
                 </thead>
                 <tbody>
-                {sensorsData.map(sensorData =>
-                    <tr key={sensorData.name}>
-                        <td>{sensorData.name}</td>
-                        <td>{sensorData.value}</td>
-                        <td>{sensorData.value}</td>
-                    </tr>
-                )}
                 </tbody>
             </table>
         );
