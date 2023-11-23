@@ -1,13 +1,67 @@
 ﻿import {Button, Container, Row, Col, Input, Label, Form, FormGroup} from 'reactstrap';
 import { useState, useEffect } from "react";
-import {Await} from "react-router-dom";
-
 
 function Sensors() {
+    
+    function changeDateToISOFormatUTC(date) {
+        let dateISO = date;
+        if (dateISO !== "") {
+            dateISO += ":00Z";
+        }
+        return dateISO;
+    }
+    
     async function handleFormSubmit(event) {
         event.preventDefault();
         
-        console.log("SUBMITED" + dateFrom + " " + dateTo);
+        setAppliedDateTo(changeDateToISOFormatUTC(chosenDateTo));
+        setAppliedDateFrom(changeDateToISOFormatUTC(chosenDateFrom));
+        
+        let typeFilters = "";
+        chosenTypeFilters.forEach(chosenSortFilter => {
+            typeFilters += chosenSortFilter;
+            typeFilters += ",";
+        })
+        if (typeFilters.length > 0)
+            typeFilters = typeFilters.substring(0, typeFilters.length - 1);
+        setAppliedTypeFilters(typeFilters);
+
+        let nameFilters = "";
+        chosenNameFilters.forEach(chosenNameFilter => {
+            nameFilters += chosenNameFilter;
+            nameFilters += ",";
+        })
+        if (nameFilters.length > 0)
+            nameFilters = nameFilters.substring(0, nameFilters.length - 1);
+        setAppliedNameFilters(nameFilters);
+        
+        console.log("TYPEFILTERS=" + typeFilters);
+        console.log("NAMEFILTERS=" + nameFilters);
+        console.log("SUBMITED" + appliedDateFrom + " " + chosenDateTo);
+    }
+
+    async function handleSensorTypeFilterChange(type, event) {
+        console.log(type + event.target.checked);
+        let typeFilters = [...chosenTypeFilters];
+        if(event.target.checked) {
+            typeFilters.push(type);
+        } else {
+            typeFilters = typeFilters.filter(typeFilter => typeFilter !== type)
+        }
+        console.log(typeFilters);
+        setChosenTypeFilters(typeFilters);
+    }
+
+    async function handleSensorNameFilterChange(name, event) {
+        console.log(name + event.target.checked);
+        let nameFilters = [...chosenNameFilters];
+        if(event.target.checked) {
+            nameFilters.push(name);
+        } else {
+            nameFilters = nameFilters.filter(typeFilter => typeFilter !== name)
+        }
+        console.log(nameFilters);
+        setChosenNameFilters(nameFilters);
     }
     
     const [isLoading, setIsLoading] = useState(true);
@@ -16,20 +70,59 @@ function Sensors() {
     const [sensorsData, setSensorsData] = useState([]);
     const [sortTypes, setSortTypes] = useState({});
     
-    const [dateFrom, setDateFrom] = useState("");
-    const [dateTo, setDateTo] = useState("");
     const [sensorNames, setSensorNames] = useState([]);
     const [sensorTypes, setSensorTypes] = useState([]);
 
-    const [chosenSortType, setChosenSortType] = useState("");
+    const [chosenDateFrom, setChosenDateFrom] = useState("");
+    const [chosenDateTo, setChosenDateTo] = useState("");
+    const [chosenTypeFilters, setChosenTypeFilters] = useState([]);
+    const [chosenNameFilters, setChosenNameFilters] = useState([]);
 
+    const [chosenSortType, setChosenSortType] = useState("");
+    
+    const [appliedDateFrom, setAppliedDateFrom] = useState("");
+    const [appliedDateTo, setAppliedDateTo] = useState("");
+    const [appliedTypeFilters, setAppliedTypeFilters] = useState("");
+    const [appliedNameFilters, setAppliedNameFilters] = useState("");
+    
     useEffect(() => {
-        
         let resource = `${process.env.REACT_APP_BACKEND_URL}/api/sensors`;
-        if ( chosenSortType !== "") {
-            resource+= "?sort-by=" + chosenSortType
+        
+        let queryParams = "";
+        if (chosenSortType !== "" || appliedTypeFilters !== "" || appliedNameFilters !== "" || appliedDateTo !== "" || appliedDateFrom !== "")
+            queryParams+="?"
+        if (chosenSortType !== "") {
+            if(queryParams.length > 1) {
+                queryParams += "&";
+            }
+            queryParams += "sort-by=" + chosenSortType;
         }
-        console.log(resource);
+        if ( appliedTypeFilters !== "") {
+            if(queryParams.length > 1) {
+                queryParams += "&";
+            }
+            queryParams += "type=" + appliedTypeFilters;
+        }
+        if ( appliedNameFilters !== "") {
+            if(queryParams.length > 1) {
+                queryParams += "&";
+            }
+            queryParams += "name=" + appliedNameFilters;
+        }
+        if ( appliedDateTo !== "") {
+            if(queryParams.length > 1) {
+                queryParams += "&";
+            }
+            queryParams += "dateTo=" + appliedDateTo;
+        }
+        if ( appliedDateFrom !== "") {
+            if(queryParams.length > 1) {
+                queryParams += "&";
+            }
+            queryParams += "dateFrom=" + appliedDateFrom;
+        }
+        resource += queryParams;
+        console.log("RESOURCE: " + resource);
         fetch(resource)
             .then(response => response.json())
             .then(data => {
@@ -37,7 +130,7 @@ function Sensors() {
                 setIsLoading(false);
             })
             .catch(error => console.error(error));
-    }, [chosenSortType]);
+    }, [chosenSortType, appliedDateFrom, appliedDateTo, appliedTypeFilters, appliedNameFilters]);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BACKEND_URL}/api/sensors/sort-types`)
@@ -116,7 +209,7 @@ function Sensors() {
                                     id="datetime-from"
                                     name="datetime-from"
                                     type="datetime-local"
-                                    onChange={event => setDateFrom(event.target.value)}
+                                    onChange={event => setChosenDateFrom(event.target.value)}
                                 />
                             </FormGroup>
                             <FormGroup>
@@ -125,13 +218,17 @@ function Sensors() {
                                     id="datetime-to"
                                     name="datetime-to"
                                     type="datetime-local"
-                                    onChange={event => setDateTo(event.target.value)}
+                                    onChange={event => setChosenDateTo(event.target.value)}
                                 />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Filter by sensor's type:</Label>
                                 {sensorTypes.map(sensorType => <div key={sensorType}>
-                                    <Input className="pg-checkbox" name="sensor-type" type="checkbox" />
+                                    <Input className="pg-checkbox"
+                                           name="sensor-type"
+                                           type="checkbox"
+                                           onChange={event => handleSensorTypeFilterChange(sensorType, event)}
+                                    />
                                     <Label check>
                                         {sensorType}
                                     </Label>
@@ -140,7 +237,11 @@ function Sensors() {
                             <FormGroup>
                                 <Label>Filter by sensor's name:</Label>
                                 {sensorNames.map(sensorName => <div key={sensorName}>
-                                    <Input className="pg-checkbox" name="sensor-name" type="checkbox" />
+                                    <Input className="pg-checkbox"
+                                           name="sensor-name"
+                                           type="checkbox"
+                                           onChange={event => handleSensorNameFilterChange(sensorName, event)}
+                                    />
                                     <Label check>
                                         {sensorName}
                                     </Label>
@@ -151,6 +252,7 @@ function Sensors() {
                 </Col>
                 <Col xs={9}>
                     <h2 id="secondTableLabel">Data:</h2>
+                    {/* TODO - CHART WITH SENSORS' DATA */}
                     {areSortTypesLoading
                         ? <p><em>Loading...</em></p>
                         : <div>
