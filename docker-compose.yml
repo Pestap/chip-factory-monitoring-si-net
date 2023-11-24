@@ -57,3 +57,9 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+  frontend:
+    build:
+      context: WebApplication/ClientApp
+    container_name: frontend
+    ports:
+      - "3000:80"

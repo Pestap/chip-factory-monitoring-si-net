@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import {Chart} from "react-google-charts";
 
-function Sensors() {
-    
+function SensorsChart() {
+
     function changeDateToISOFormatUTC(date) {
         let dateISO = date;
         if (dateISO !== "") {
@@ -11,13 +11,13 @@ function Sensors() {
         }
         return dateISO;
     }
-    
+
     async function handleFormSubmit(event) {
         event.preventDefault();
-        
+
         setAppliedDateTo(changeDateToISOFormatUTC(chosenDateTo));
         setAppliedDateFrom(changeDateToISOFormatUTC(chosenDateFrom));
-        
+
         let typeFilters = "";
         chosenTypeFilters.forEach(chosenSortFilter => {
             typeFilters += chosenSortFilter;
@@ -35,7 +35,7 @@ function Sensors() {
         if (nameFilters.length > 0)
             nameFilters = nameFilters.substring(0, nameFilters.length - 1);
         setAppliedNameFilters(nameFilters);
-        
+
         console.log("TYPEFILTERS=" + typeFilters);
         console.log("NAMEFILTERS=" + nameFilters);
         console.log("SUBMITED" + appliedDateFrom + " " + chosenDateTo);
@@ -64,13 +64,13 @@ function Sensors() {
         console.log(nameFilters);
         setChosenNameFilters(nameFilters);
     }
-    
+
     const [isLoading, setIsLoading] = useState(true);
     const [areFiltersLoading, setAreFiltersLoading] = useState(true);
     const [areSortTypesLoading, setAreSortTypesLoading] = useState(true);
     const [sensorsData, setSensorsData] = useState([]);
     const [sortTypes, setSortTypes] = useState({});
-    
+
     const [sensorNames, setSensorNames] = useState([]);
     const [sensorTypes, setSensorTypes] = useState([]);
 
@@ -80,7 +80,7 @@ function Sensors() {
     const [chosenNameFilters, setChosenNameFilters] = useState([]);
 
     const [chosenSortType, setChosenSortType] = useState("");
-    
+
     const [appliedDateFrom, setAppliedDateFrom] = useState("");
     const [appliedDateTo, setAppliedDateTo] = useState("");
     const [appliedTypeFilters, setAppliedTypeFilters] = useState("");
@@ -93,10 +93,10 @@ function Sensors() {
         title: "Sensors Data",
         legend: { position: "bottom" }
     });
-    
+
     useEffect(() => {
         let resource = `${process.env.REACT_APP_BACKEND_URL}/api/sensors`;
-        
+
         let queryParams = "";
         if (chosenSortType !== "" || appliedTypeFilters !== "" || appliedNameFilters !== "" || appliedDateTo !== "" || appliedDateFrom !== "")
             queryParams+="?"
@@ -148,7 +148,7 @@ function Sensors() {
         let queryParams = "";
 
         queryParams += "?sort-by=SortByDateAsc"
-        
+
         if ( appliedTypeFilters !== "") {
             if(queryParams.length > 1) {
                 queryParams += "&";
@@ -174,13 +174,13 @@ function Sensors() {
             queryParams += "dateFrom=" + appliedDateFrom;
         }
         resource += queryParams;
-        
+
         fetch(resource)
             .then(response => response.json())
             .then(data => {
                 console.log("CHART DATA");
                 console.log(data);
-                
+
                 const availableSensors = [];
                 data.forEach(sensorData => {
                     if (!availableSensors.includes(sensorData.name)) {
@@ -190,30 +190,30 @@ function Sensors() {
                 availableSensors.sort();
                 const firstRow = ["Time", ...availableSensors];
                 console.log(firstRow);
-                
+
                 const chartData = [];
                 chartData.push(firstRow);
-                
+
                 let chartDataRow = [];
-                
+
                 for (let i = 0; i < firstRow.length; i++) {
                     chartDataRow.push(null);
                 }
                 data.forEach(sensorData => {
-                   if (chartDataRow[0] === null) {
-                       chartDataRow[0] = sensorData.time;
-                       chartDataRow[firstRow.findIndex(name => name === sensorData.name)] = sensorData.value;
-                   } else if (chartDataRow[0] === sensorData.time) {
-                       chartDataRow[firstRow.findIndex(name => name === sensorData.name)] = sensorData.value;
-                   } else {
-                       chartData.push(chartDataRow);
-                       chartDataRow = [];
-                       for (let i = 0; i < firstRow.length; i++) {
-                           chartDataRow.push(null);
-                       }
-                       chartDataRow[0] = sensorData.time;
-                       chartDataRow[firstRow.findIndex(name => name === sensorData.name)] = sensorData.value;
-                   }
+                    if (chartDataRow[0] === null) {
+                        chartDataRow[0] = sensorData.time;
+                        chartDataRow[firstRow.findIndex(name => name === sensorData.name)] = sensorData.value;
+                    } else if (chartDataRow[0] === sensorData.time) {
+                        chartDataRow[firstRow.findIndex(name => name === sensorData.name)] = sensorData.value;
+                    } else {
+                        chartData.push(chartDataRow);
+                        chartDataRow = [];
+                        for (let i = 0; i < firstRow.length; i++) {
+                            chartDataRow.push(null);
+                        }
+                        chartDataRow[0] = sensorData.time;
+                        chartDataRow[firstRow.findIndex(name => name === sensorData.name)] = sensorData.value;
+                    }
                 });
                 chartData.push(chartDataRow);
                 setFilteredChartData(chartData);
@@ -243,38 +243,11 @@ function Sensors() {
                 setSensorNames(data);
             })
             .catch(error => console.error(error));
-        
+
         Promise.all([promiseFilters1, promiseFilters2])
             .then(r => setAreFiltersLoading(false));
     }, []);
-    
-    function sensorsValuesTable() {
-        return (
-            <table className="table table-striped" aria-labelledby="tableLabel">
-                <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Value</th>
-                    <th>Unit</th>
-                    <th>Time</th>
-                </tr>
-                </thead>
-                <tbody>
-                {sensorsData.map(sensorData =>
-                    <tr key={sensorData.id}>
-                        <td>{sensorData.topic}</td>
-                        <td>{sensorData.name}</td>
-                        <td>{sensorData.value}</td>
-                        <td>{sensorData.unitOfMeasurement}</td>
-                        <td>{sensorData.time}</td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
-        );
-    }
-    
+
     return (
         <Container>
             <Row>
@@ -350,56 +323,10 @@ function Sensors() {
                             options={chartOptions}
                         />
                     </div>}
-                    {areSortTypesLoading
-                        ? <p><em>Loading...</em></p>
-                        : <div>
-                            <Row className="align-items-end">
-                                <Col xs={4}>
-                                    <Label for="exampleSelect">Sort by:</Label>
-                                    <Input
-                                        id="exampleSelect"
-                                        name="select"
-                                        type="select"
-                                        onChange={e => {setChosenSortType(e.target.value); setIsLoading(false)}}
-                                    >
-                                        {Object.keys(sortTypes).map( sortTypeKey =>
-                                            <option key={sortTypeKey} value={sortTypeKey}>
-                                                {sortTypes[sortTypeKey]}
-                                            </option>
-                                        )}
-                                    </Input>
-                                </Col>
-                                <Col xs={8}>
-                                    {!isLoading && <div>
-                                        <Button
-                                            color="primary"
-                                            href={`http://localhost/api/sensors/csv${chosenQueryParams}`}
-                                            tag="a"
-                                            className="pg-btn-download"
-                                        >
-                                            Pobierz do csv
-                                        </Button>
-                                        <Button
-                                            color="primary"
-                                            href={`http://localhost/api/sensors/json${chosenQueryParams}`}
-                                            tag="a"
-                                            className="pg-btn-download"
-                                        >
-                                            Pobierz do json
-                                        </Button>
-                                    </div>}
-                                </Col>
-                            </Row>
-                            {isLoading
-                                ? <p><em>Loading...</em></p>
-                                : <div className="table-responsive">{sensorsValuesTable()}</div>
-                            }
-                        </div>
-                    }
                 </Col>
             </Row>
         </Container>
     );
 }
 
-export default Sensors;
+export default SensorsChart;
