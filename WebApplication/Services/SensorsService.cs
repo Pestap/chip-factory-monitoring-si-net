@@ -78,7 +78,7 @@ public class SensorsService
         _hub.Clients.All.SendAsync("SendAverageValue", $"{newSensorValue.Name},{CalculateAverageOfSensor(newSensorValue.Name)},{newSensorValue.UnitOfMeasurement}");
     }
 
-
+    
     public async Task<List<SensorValue>> GetAllAsync(SensorsSortTypes sortType, string type, string name, string dateFrom, string dateTo)
     {
         var builder = Builders<SensorValue>.Filter;
@@ -120,36 +120,33 @@ public class SensorsService
 
         filter = typeFilter & nameFilter & dateFilter;
         
-        if (type == "" && sortType != SensorsSortTypes.Default)
+        Expression<Func<SensorValue, object>> sortExpression = i => i.Value;
+        var ascending = !(sortType == SensorsSortTypes.SortByDateDesc || sortType == SensorsSortTypes.SortByNameDesc ||
+                           sortType == SensorsSortTypes.SortByValueDesc);
+        Console.WriteLine(sortType);
+        switch (sortType)
         {
-            Expression<Func<SensorValue, object>> sortExpression = i => i.Value;
-            var ascending = !(sortType == SensorsSortTypes.SortByDateDesc || sortType == SensorsSortTypes.SortByNameDesc ||
-                               sortType == SensorsSortTypes.SortByValueDesc);
-            switch (sortType)
-            {
-                case SensorsSortTypes.SortByDateDesc:
-                case SensorsSortTypes.SortByDateAsc:
-                    sortExpression = i => i.Time;
-                    break;
-                case SensorsSortTypes.SortByNameDesc:
-                case SensorsSortTypes.SortByNameAsc:
-                    sortExpression = i => i.Name;
-                    break;
-                case SensorsSortTypes.SortByValueDesc:
-                case SensorsSortTypes.SortByValueAsc:
-                    sortExpression = i => i.Value;
-                    break;
-            }
+            case SensorsSortTypes.SortByDateDesc:
+            case SensorsSortTypes.SortByDateAsc:
+                sortExpression = i => i.Time;
+                break;
+            case SensorsSortTypes.SortByNameDesc:
+            case SensorsSortTypes.SortByNameAsc:
+                sortExpression = i => i.Name;
+                break;
+            case SensorsSortTypes.SortByValueDesc:
+            case SensorsSortTypes.SortByValueAsc:
+                sortExpression = i => i.Value;
+                break;
+            case SensorsSortTypes.Default:
+                return await _sensorsValuesCollection.Find(filter).ToListAsync();
+        }
             
-            if(ascending)
-                return await _sensorsValuesCollection.Find( _ => true).SortBy(sortExpression).ToListAsync();
-            return await _sensorsValuesCollection.Find( _ => true).SortByDescending(sortExpression).ToListAsync();
-        }
-        if (type == "" && sortType == SensorsSortTypes.Default)
-        {
-            return await _sensorsValuesCollection.Find( _ => true).ToListAsync();
-        }
-        return await _sensorsValuesCollection.Find(Builders<SensorValue>.Filter.Eq(v=> v.Topic, type)).ToListAsync();
+        if(ascending)
+            return await _sensorsValuesCollection.Find( filter).SortBy(sortExpression).ToListAsync();
+        return await _sensorsValuesCollection.Find(filter).SortByDescending(sortExpression).ToListAsync();
+
+        
     }
 
     public Dictionary<SensorsSortTypes, String> GetAllSortTypes()
