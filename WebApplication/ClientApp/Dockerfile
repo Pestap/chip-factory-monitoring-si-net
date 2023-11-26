@@ -17,6 +17,10 @@ RUN npm run build
 
 # production environment
 FROM nginx:alpine
+
+# Copy config nginx
+COPY --from=build /app/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
 WORKDIR /usr/share/nginx/html
 
 # Remove default nginx static assets
