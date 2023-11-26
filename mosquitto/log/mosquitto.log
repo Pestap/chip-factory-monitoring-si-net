@@ -258,3 +258,307 @@ To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
 1700068278: New connection from 172.27.0.6:45418 on port 1883.
 1700068278: New client connected from 172.27.0.6:45418 as Client (p2, c1, k15, u'admin').
 1700068397: Client Generator closed its connection.
+1700423097: mosquitto version 2.0.18 starting
+1700423097: Config loaded from /mosquitto/config/mosquitto.conf.
+1700423097: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700423097: Opening ipv4 listen socket on port 1883.
+1700423097: Opening ipv6 listen socket on port 1883.
+1700423097: mosquitto version 2.0.18 running
+1700423099: New connection from 172.28.0.5:51916 on port 1883.
+1700423099: New client connected from 172.28.0.5:51916 as Generator (p2, c1, k15, u'admin').
+1700423100: New connection from 172.28.0.6:34682 on port 1883.
+1700423100: New client connected from 172.28.0.6:34682 as Client (p2, c1, k15, u'admin').
+1700424599: Client Generator closed its connection.
+1700424772: Client Client closed its connection.
+1700424773: mosquitto version 2.0.18 terminating
+1700424773: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700424976: mosquitto version 2.0.18 starting
+1700424976: Config loaded from /mosquitto/config/mosquitto.conf.
+1700424976: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700424976: Opening ipv4 listen socket on port 1883.
+1700424976: Opening ipv6 listen socket on port 1883.
+1700424976: mosquitto version 2.0.18 running
+1700424977: New connection from 172.29.0.5:60718 on port 1883.
+1700424977: New client connected from 172.29.0.5:60718 as Generator (p2, c1, k15, u'admin').
+1700424977: New connection from 172.29.0.6:58060 on port 1883.
+1700424977: New client connected from 172.29.0.6:58060 as Client (p2, c1, k15, u'admin').
+1700425117: Client Generator closed its connection.
+1700425117: Client Client closed its connection.
+1700425118: mosquitto version 2.0.18 terminating
+1700425118: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700750550: mosquitto version 2.0.18 starting
+1700750550: Config loaded from /mosquitto/config/mosquitto.conf.
+1700750550: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700750550: Opening ipv4 listen socket on port 1883.
+1700750550: Opening ipv6 listen socket on port 1883.
+1700750550: mosquitto version 2.0.18 running
+1700750553: New connection from 172.19.0.5:59946 on port 1883.
+1700750553: New client connected from 172.19.0.5:59946 as Generator (p2, c1, k15, u'admin').
+1700750555: New connection from 172.19.0.6:45578 on port 1883.
+1700750555: New client connected from 172.19.0.6:45578 as Client (p2, c1, k15, u'admin').
+1700752053: Client Generator closed its connection.
+1700752351: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700754152: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700755953: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700756367: Client Client closed its connection.
+1700756368: mosquitto version 2.0.18 terminating
+1700756368: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700756376: mosquitto version 2.0.18 starting
+1700756376: Config loaded from /mosquitto/config/mosquitto.conf.
+1700756376: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700756376: Opening ipv4 listen socket on port 1883.
+1700756376: Opening ipv6 listen socket on port 1883.
+1700756376: mosquitto version 2.0.18 running
+1700756377: New connection from 172.21.0.5:47742 on port 1883.
+1700756377: New client connected from 172.21.0.5:47742 as Generator (p2, c1, k15, u'admin').
+1700756378: New connection from 172.21.0.6:54084 on port 1883.
+1700756378: New client connected from 172.21.0.6:54084 as Client (p2, c1, k15, u'admin').
+1700757308: Client Generator closed its connection.
+1700757308: Client Client closed its connection.
+1700757309: mosquitto version 2.0.18 terminating
+1700757309: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700757318: mosquitto version 2.0.18 starting
+1700757318: Config loaded from /mosquitto/config/mosquitto.conf.
+1700757318: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700757318: Opening ipv4 listen socket on port 1883.
+1700757318: Opening ipv6 listen socket on port 1883.
+1700757318: mosquitto version 2.0.18 running
+1700757319: New connection from 172.22.0.5:33136 on port 1883.
+1700757319: New client connected from 172.22.0.5:33136 as Generator (p2, c1, k15, u'admin').
+1700757320: New connection from 172.22.0.6:49250 on port 1883.
+1700757320: New client connected from 172.22.0.6:49250 as Client (p2, c1, k15, u'admin').
+1700758819: Client Generator closed its connection.
+1700759119: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700759185: Client Client closed its connection.
+1700759185: mosquitto version 2.0.18 terminating
+1700759185: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700759191: mosquitto version 2.0.18 starting
+1700759191: Config loaded from /mosquitto/config/mosquitto.conf.
+1700759191: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700759191: Opening ipv4 listen socket on port 1883.
+1700759191: Opening ipv6 listen socket on port 1883.
+1700759191: mosquitto version 2.0.18 running
+1700759191: New connection from 172.23.0.5:34736 on port 1883.
+1700759191: New client connected from 172.23.0.5:34736 as Generator (p2, c1, k15, u'admin').
+1700759192: New connection from 172.23.0.6:48318 on port 1883.
+1700759192: New client connected from 172.23.0.6:48318 as Client (p2, c1, k15, u'admin').
+1700760167: Client Generator closed its connection.
+1700760167: Client Client closed its connection.
+1700760168: mosquitto version 2.0.18 terminating
+1700760168: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700760173: mosquitto version 2.0.18 starting
+1700760173: Config loaded from /mosquitto/config/mosquitto.conf.
+1700760173: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700760173: Opening ipv4 listen socket on port 1883.
+1700760173: Opening ipv6 listen socket on port 1883.
+1700760173: mosquitto version 2.0.18 running
+1700760173: New connection from 172.24.0.5:37780 on port 1883.
+1700760173: New client connected from 172.24.0.5:37780 as Generator (p2, c1, k15, u'admin').
+1700760174: New connection from 172.24.0.6:58186 on port 1883.
+1700760174: New client connected from 172.24.0.6:58186 as Client (p2, c1, k15, u'admin').
+1700760312: Client Generator closed its connection.
+1700760315: New connection from 172.24.0.5:51030 on port 1883.
+1700760315: New client connected from 172.24.0.5:51030 as Generator (p2, c1, k15, u'admin').
+1700760326: Client Generator closed its connection.
+1700760326: Client Client closed its connection.
+1700760327: mosquitto version 2.0.18 terminating
+1700760327: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700760332: mosquitto version 2.0.18 starting
+1700760332: Config loaded from /mosquitto/config/mosquitto.conf.
+1700760332: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700760332: Opening ipv4 listen socket on port 1883.
+1700760332: Opening ipv6 listen socket on port 1883.
+1700760332: mosquitto version 2.0.18 running
+1700760333: New connection from 172.26.0.5:43034 on port 1883.
+1700760333: New client connected from 172.26.0.5:43034 as Generator (p2, c1, k15, u'admin').
+1700760333: New connection from 172.26.0.6:54826 on port 1883.
+1700760333: New client connected from 172.26.0.6:54826 as Client (p2, c1, k15, u'admin').
+1700760387: Client Generator closed its connection.
+1700760387: Client Client closed its connection.
+1700760388: mosquitto version 2.0.18 terminating
+1700760388: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700760396: mosquitto version 2.0.18 starting
+1700760396: Config loaded from /mosquitto/config/mosquitto.conf.
+1700760396: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700760396: Opening ipv4 listen socket on port 1883.
+1700760396: Opening ipv6 listen socket on port 1883.
+1700760396: mosquitto version 2.0.18 running
+1700760397: New connection from 172.27.0.5:59460 on port 1883.
+1700760397: New client connected from 172.27.0.5:59460 as Generator (p2, c1, k15, u'admin').
+1700760397: New connection from 172.27.0.6:33384 on port 1883.
+1700760397: New client connected from 172.27.0.6:33384 as Client (p2, c1, k15, u'admin').
+1700760916: Client Generator closed its connection.
+1700760916: Client Client closed its connection.
+1700760917: mosquitto version 2.0.18 terminating
+1700760917: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700760937: mosquitto version 2.0.18 starting
+1700760937: Config loaded from /mosquitto/config/mosquitto.conf.
+1700760937: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700760937: Opening ipv4 listen socket on port 1883.
+1700760937: Opening ipv6 listen socket on port 1883.
+1700760937: mosquitto version 2.0.18 running
+1700760938: New connection from 172.28.0.5:60046 on port 1883.
+1700760938: New client connected from 172.28.0.5:60046 as Generator (p2, c1, k15, u'admin').
+1700760939: New connection from 172.28.0.6:33714 on port 1883.
+1700760939: New client connected from 172.28.0.6:33714 as Client (p2, c1, k15, u'admin').
+1700762192: Client Generator closed its connection.
+1700762192: Client Client closed its connection.
+1700762193: mosquitto version 2.0.18 terminating
+1700762193: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700847481: mosquitto version 2.0.18 starting
+1700847481: Config loaded from /mosquitto/config/mosquitto.conf.
+1700847481: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700847481: Opening ipv4 listen socket on port 1883.
+1700847481: Opening ipv6 listen socket on port 1883.
+1700847481: mosquitto version 2.0.18 running
+1700847482: New connection from 172.19.0.7:38140 on port 1883.
+1700847482: New client connected from 172.19.0.7:38140 as Generator (p2, c1, k15, u'admin').
+1700847560: New connection from 172.19.0.5:37770 on port 1883.
+1700847560: New client connected from 172.19.0.5:37770 as Client (p2, c1, k15, u'admin').
+1700848059: Client Generator closed its connection.
+1700848059: Client Client closed its connection.
+1700848061: mosquitto version 2.0.18 terminating
+1700848061: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700848477: mosquitto version 2.0.18 starting
+1700848477: Config loaded from /mosquitto/config/mosquitto.conf.
+1700848477: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700848477: Opening ipv4 listen socket on port 1883.
+1700848477: Opening ipv6 listen socket on port 1883.
+1700848477: mosquitto version 2.0.18 running
+1700848479: New connection from 172.21.0.6:33474 on port 1883.
+1700848479: New client connected from 172.21.0.6:33474 as Generator (p2, c1, k15, u'admin').
+1700848480: New connection from 172.21.0.7:40590 on port 1883.
+1700848480: New client connected from 172.21.0.7:40590 as Client (p2, c1, k15, u'admin').
+1700848645: Client Generator closed its connection.
+1700848645: Client Client closed its connection.
+1700848647: mosquitto version 2.0.18 terminating
+1700848647: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700848668: mosquitto version 2.0.18 starting
+1700848668: Config loaded from /mosquitto/config/mosquitto.conf.
+1700848668: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700848668: Opening ipv4 listen socket on port 1883.
+1700848668: Opening ipv6 listen socket on port 1883.
+1700848668: mosquitto version 2.0.18 running
+1700848669: New connection from 172.22.0.6:58538 on port 1883.
+1700848669: New client connected from 172.22.0.6:58538 as Generator (p2, c1, k15, u'admin').
+1700848670: New connection from 172.22.0.7:51556 on port 1883.
+1700848670: New client connected from 172.22.0.7:51556 as Client (p2, c1, k15, u'admin').
+1700848726: Client Client closed its connection.
+1700848726: Client Generator closed its connection.
+1700848727: mosquitto version 2.0.18 terminating
+1700848727: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700848828: mosquitto version 2.0.18 starting
+1700848828: Config loaded from /mosquitto/config/mosquitto.conf.
+1700848828: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700848828: Opening ipv4 listen socket on port 1883.
+1700848828: Opening ipv6 listen socket on port 1883.
+1700848828: mosquitto version 2.0.18 running
+1700848829: New connection from 172.23.0.6:60404 on port 1883.
+1700848829: New client connected from 172.23.0.6:60404 as Generator (p2, c1, k15, u'admin').
+1700848830: New connection from 172.23.0.7:33980 on port 1883.
+1700848830: New client connected from 172.23.0.7:33980 as Client (p2, c1, k15, u'admin').
+1700849528: Client Generator closed its connection.
+1700849528: Client Client closed its connection.
+1700849530: mosquitto version 2.0.18 terminating
+1700849530: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700849700: mosquitto version 2.0.18 starting
+1700849700: Config loaded from /mosquitto/config/mosquitto.conf.
+1700849700: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700849700: Opening ipv4 listen socket on port 1883.
+1700849700: Opening ipv6 listen socket on port 1883.
+1700849700: mosquitto version 2.0.18 running
+1700849701: New connection from 172.24.0.6:48380 on port 1883.
+1700849701: New client connected from 172.24.0.6:48380 as Generator (p2, c1, k15, u'admin').
+1700849701: New connection from 172.24.0.7:59826 on port 1883.
+1700849701: New client connected from 172.24.0.7:59826 as Client (p2, c1, k15, u'admin').
+1700849854: Client Generator closed its connection.
+1700849854: Client Client closed its connection.
+1700849856: mosquitto version 2.0.18 terminating
+1700849856: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700849915: mosquitto version 2.0.18 starting
+1700849915: Config loaded from /mosquitto/config/mosquitto.conf.
+1700849915: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700849915: Opening ipv4 listen socket on port 1883.
+1700849915: Opening ipv6 listen socket on port 1883.
+1700849915: mosquitto version 2.0.18 running
+1700849917: New connection from 172.26.0.6:46926 on port 1883.
+1700849917: New client connected from 172.26.0.6:46926 as Generator (p2, c1, k15, u'admin').
+1700849917: New connection from 172.26.0.7:33026 on port 1883.
+1700849917: New client connected from 172.26.0.7:33026 as Client (p2, c1, k15, u'admin').
+1700850307: Client Generator closed its connection.
+1700850307: Client Client closed its connection.
+1700850308: mosquitto version 2.0.18 terminating
+1700850308: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700850577: mosquitto version 2.0.18 starting
+1700850577: Config loaded from /mosquitto/config/mosquitto.conf.
+1700850577: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700850577: Opening ipv4 listen socket on port 1883.
+1700850577: Opening ipv6 listen socket on port 1883.
+1700850577: mosquitto version 2.0.18 running
+1700850578: New connection from 172.27.0.6:32972 on port 1883.
+1700850578: New client connected from 172.27.0.6:32972 as Generator (p2, c1, k15, u'admin').
+1700850579: New connection from 172.27.0.7:55466 on port 1883.
+1700850579: New client connected from 172.27.0.7:55466 as Client (p2, c1, k15, u'admin').
+1700850583: Client Generator closed its connection.
+1700850583: Client Client closed its connection.
+1700850584: mosquitto version 2.0.18 terminating
+1700850584: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700850636: mosquitto version 2.0.18 starting
+1700850636: Config loaded from /mosquitto/config/mosquitto.conf.
+1700850636: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1700850636: Opening ipv4 listen socket on port 1883.
+1700850636: Opening ipv6 listen socket on port 1883.
+1700850636: mosquitto version 2.0.18 running
+1700850637: New connection from 172.28.0.6:53708 on port 1883.
+1700850637: New client connected from 172.28.0.6:53708 as Generator (p2, c1, k15, u'admin').
+1700850638: New connection from 172.28.0.7:51824 on port 1883.
+1700850638: New client connected from 172.28.0.7:51824 as Client (p2, c1, k15, u'admin').
+1700852137: Client Generator closed its connection.
+1700852436: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1700853859: Client Client closed its connection.
+1700853871: mosquitto version 2.0.18 terminating
+1700853871: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1701023384: mosquitto version 2.0.18 starting
+1701023384: Config loaded from /mosquitto/config/mosquitto.conf.
+1701023384: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1701023384: Opening ipv4 listen socket on port 1883.
+1701023384: Opening ipv6 listen socket on port 1883.
+1701023384: mosquitto version 2.0.18 running
+1701023401: New connection from 172.19.0.6:49268 on port 1883.
+1701023401: New client connected from 172.19.0.6:49268 as Generator (p2, c1, k15, u'admin').
+1701023418: New connection from 172.19.0.7:56080 on port 1883.
+1701023418: New client connected from 172.19.0.7:56080 as Client (p2, c1, k15, u'admin').
+1701023658: Client Generator closed its connection.
+1701023658: Client Client closed its connection.
+1701023661: mosquitto version 2.0.18 terminating
+1701023661: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1701024131: mosquitto version 2.0.18 starting
+1701024131: Config loaded from /mosquitto/config/mosquitto.conf.
+1701024131: Warning: File /mosquitto/config/password.txt has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/password.txt`.
+1701024131: Opening ipv4 listen socket on port 1883.
+1701024131: Opening ipv6 listen socket on port 1883.
+1701024131: mosquitto version 2.0.18 running
+1701024132: New connection from 172.21.0.6:36206 on port 1883.
+1701024132: New client connected from 172.21.0.6:36206 as Generator (p2, c1, k15, u'admin').
+1701024132: New connection from 172.21.0.7:39952 on port 1883.
+1701024132: New client connected from 172.21.0.7:39952 as Client (p2, c1, k15, u'admin').

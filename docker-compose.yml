@@ -34,7 +34,7 @@ services:
       - MONGO_CONNECTION_STRING=mongodb://root:example@mongo:27017/
     ports:
       - 7063:7063
-      - 80:80
+      - 5000:80
       - 443:443
   mongo:
     image: mongo
@@ -62,4 +62,4 @@ services:
       context: WebApplication/ClientApp
     container_name: frontend
     ports:
-      - "3000:80"
+      - "80:80"

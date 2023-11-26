@@ -1,5 +1,3 @@
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import Sensors from "./components/Sensors";
 import Dashboard from "./components/Dashboard";
@@ -22,6 +20,10 @@ const AppRoutes = [
   {
     path: '/chart',
     element: <SensorsChart />
+  },
+  {
+    path: '/*',
+    element: <Home />
   }
 ];
 
