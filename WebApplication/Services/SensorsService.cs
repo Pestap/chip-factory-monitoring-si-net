@@ -70,7 +70,9 @@ public class SensorsService
         {
             sensorValues[newSensorValue.Name] = new List<SensorValue>();
         }
-        sensorValues[newSensorValue.Name].Add(newSensorValue); ;
+        //sensorValues[newSensorValue.Name].Add(newSensorValue); ;
+        sensorValues[newSensorValue.Name].Insert(0, newSensorValue);
+        //sensorValues[newSensorValue.Name].Prepend(newSensorValue);
         
         _sensorsValuesCollection.InsertOne(newSensorValue);
         
