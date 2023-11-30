@@ -17,7 +17,7 @@ public class SensorsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<SensorValue>> GetAllSensors(
+    public async Task<List<SensorValue>> GretAllSensos(
         [FromQuery(Name = "sort-by")] SensorsSortTypes sortType,
         string type= "",
         string name="",

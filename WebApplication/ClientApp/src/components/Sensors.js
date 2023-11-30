@@ -373,7 +373,7 @@ function Sensors() {
                                     {!isLoading && <div>
                                         <Button
                                             color="primary"
-                                            href={`http://localhost/api/sensors/csv${chosenQueryParams}`}
+                                            href={`${process.env.REACT_APP_BACKEND_URL}/api/sensors/csv${chosenQueryParams}`}
                                             tag="a"
                                             className="pg-btn-download"
                                         >
@@ -381,7 +381,7 @@ function Sensors() {
                                         </Button>
                                         <Button
                                             color="primary"
-                                            href={`http://localhost/api/sensors/json${chosenQueryParams}`}
+                                            href={`${process.env.REACT_APP_BACKEND_URL}/api/sensors/json${chosenQueryParams}`}
                                             tag="a"
                                             className="pg-btn-download"
                                         >
